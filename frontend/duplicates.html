@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duplicate Finder - SQAIP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: #0d1117; color: #e6edf3; font-family: 'Inter', sans-serif; }
+        .main-wrap { padding: 40px; max-width: 1200px; margin: 0 auto; }
+        
+        .header-section { margin-bottom: 30px; }
+        .header-section h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+        .header-section p { color: #8b949e; font-size: 0.95rem; }
+
+        .control-panel {
+            background: #161b22; border: 1px solid #30363d;
+            border-radius: 12px; padding: 24px; margin-bottom: 30px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 20px; flex-wrap: wrap;
+        }
+        .threshold-wrap { flex: 1; min-width: 250px; }
+        .threshold-val { font-weight: 600; color: #58a6ff; margin-left: 10px; }
+        
+        .btn-scan {
+            background: linear-gradient(135deg, #238636, #2ea043);
+            border: none; border-radius: 8px; padding: 12px 30px;
+            color: #fff; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; display: flex; align-items: center; gap: 10px;
+        }
+        .btn-scan:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-scan:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Duplicate Pair Card */
+        .duplicate-pair {
+            background: #161b22; border: 1px solid #30363d;
+            border-radius: 12px; margin-bottom: 24px; overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .duplicate-pair:hover { border-color: #f85149; }
+        
+        .pair-header {
+            background: rgba(248, 81, 73, 0.05); border-bottom: 1px solid #30363d;
+            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .match-score {
+            font-size: 0.85rem; font-weight: 700; color: #f85149;
+            background: rgba(248, 81, 73, 0.1); padding: 4px 12px; border-radius: 20px;
+        }
+        
+        .pair-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+        .q-side { padding: 20px; position: relative; }
+        .q-side:first-child { border-right: 1px solid #30363d; }
+        .q-side .label { font-size: 0.72rem; font-weight: 600; color: #8b949e; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .q-text { font-size: 0.95rem; line-height: 1.5; color: #e6edf3; }
+        .q-meta { margin-top: 15px; display: flex; gap: 10px; font-size: 0.75rem; color: #8b949e; }
+        
+        .pair-footer {
+            padding: 12px 20px; background: #0d1117; border-top: 1px solid #30363d;
+            display: flex; justify-content: flex-end; gap: 10px;
+        }
+        .btn-action {
+            font-size: 0.8rem; padding: 6px 14px; border-radius: 6px;
+            cursor: pointer; border: 1px solid #30363d; background: #21262d; color: #c9d1d9;
+        }
+        .btn-action:hover { background: #30363d; }
+        .btn-merge { background: #238636; border-color: #238636; color: #fff; }
+        .btn-delete { background: #da3633; border-color: #da3633; color: #fff; }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center; padding: 80px 20px; color: #8b949e;
+        }
+        .empty-icon { font-size: 4rem; color: #21262d; margin-bottom: 20px; }
+        
+        /* Skeleton */
+        .skeleton { height: 200px; background: #161b22; border-radius: 12px; margin-bottom: 24px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 0.3; } 100% { opacity: 0.6; } }
+
+        @media (max-width: 768px) {
+            .pair-body { grid-template-columns: 1fr; }
+            .q-side:first-child { border-right: none; border-bottom: 1px solid #30363d; }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="stars"></div>
+    
+    <div class="layout-wrapper">
+        <!-- Sidebar will be injected via JS if needed or added manually -->
+        <aside id="sidebar" class="sidebar glassmorphic">
+            <!-- Sidebar content same as dashboard.html -->
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="brand">
+                    <i class="fas fa-brain"></i>
+                    <span>SQAIP</span>
+                </a>
+            </div>
+            <nav class="nav flex-column">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="questions.html" class="nav-link">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Questions</span>
+                </a>
+                <a href="similarity.html" class="nav-link">
+                    <i class="fas fa-search"></i>
+                    <span>Similarity Finder</span>
+                </a>
+                <a href="pdf-upload.html" class="nav-link">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>PDF Similarity</span>
+                </a>
+                <a href="autotag.html" class="nav-link">
+                    <i class="fas fa-tags"></i>
+                    <span>Auto Tagging</span>
+                </a>
+                <hr class="my-3">
+                <a href="#" class="nav-link" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="main-wrap">
+                <div class="header-section">
+                    <h1>AI Duplicate Finder</h1>
+                    <p>Scanning your database using NLP to find nearly identical questions that should be merged or deleted.</p>
+                </div>
+
+                <div class="control-panel glassmorphic">
+                    <div class="threshold-wrap">
+                        <label class="form-label">Similarity Threshold <span id="thresholdVal" class="threshold-val">85%</span></label>
+                        <input type="range" class="form-range" id="thresholdRange" min="50" max="100" value="85">
+                    </div>
+                    <button class="btn-scan" id="scanBtn">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Scan for Duplicates</span>
+                    </button>
+                </div>
+
+                <div id="loadingSection" style="display: none;">
+                    <div class="skeleton"></div>
+                    <div class="skeleton"></div>
+                </div>
+
+                <div id="resultsInfo" style="display: none; margin-bottom: 20px; font-size: 0.9rem; color: #8b949e;">
+                    Found <span id="duplicateCount" style="color: #f85149; font-weight: 700;">0</span> potential duplicate pairs.
+                </div>
+
+                <div id="duplicatesList">
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fas fa-copy"></i></div>
+                        <h3>Ready to Clean Up?</h3>
+                        <p>Click "Scan for Duplicates" to start the AI analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scanBtn = document.getElementById('scanBtn');
+            const thresholdRange = document.getElementById('thresholdRange');
+            const thresholdVal = document.getElementById('thresholdVal');
+            
+            thresholdRange.addEventListener('input', (e) => {
+                thresholdVal.textContent = e.target.value + '%';
+            });
+
+            scanBtn.addEventListener('click', scanForDuplicates);
+        });
+
+        async function scanForDuplicates() {
+            const scanBtn = document.getElementById('scanBtn');
+            const loadingSection = document.getElementById('loadingSection');
+            const duplicatesList = document.getElementById('duplicatesList');
+            const resultsInfo = document.getElementById('resultsInfo');
+            const threshold = parseInt(document.getElementById('thresholdRange').value) / 100;
+
+            scanBtn.disabled = true;
+            scanBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scanning...';
+            loadingSection.style.display = 'block';
+            duplicatesList.innerHTML = '';
+            resultsInfo.style.display = 'none';
+
+            try {
+                const response = await fetchAPI('/ai/duplicates', {
+                    method: 'POST',
+                    body: JSON.stringify({ threshold })
+                });
+
+                loadingSection.style.display = 'none';
+                scanBtn.disabled = false;
+                scanBtn.innerHTML = '<i class="fas fa-search-plus"></i> <span>Scan for Duplicates</span>';
+
+                if (response && response.success && response.data && response.data.duplicates) {
+                    const duplicates = response.data.duplicates;
+                    document.getElementById('duplicateCount').textContent = duplicates.length;
+                    resultsInfo.style.display = 'block';
+
+                    if (duplicates.length === 0) {
+                        duplicatesList.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon" style="color: #3fb950;"><i class="fas fa-check-circle"></i></div>
+                                <h3 style="color: #3fb950;">Repository is Clean!</h3>
+                                <p>No duplicates found at this threshold. Your database is well-organized.</p>
+                            </div>
+                        `;
+                    } else {
+                        renderDuplicates(duplicates);
+                    }
+                }
+            } catch (error) {
+                console.error('Scan error:', error);
+                loadingSection.style.display = 'none';
+                scanBtn.disabled = false;
+                scanBtn.innerHTML = '<i class="fas fa-search-plus"></i> <span>Scan for Duplicates</span>';
+                alert('Error scanning for duplicates. Please check console.');
+            }
+        }
+
+        function renderDuplicates(pairs) {
+            const container = document.getElementById('duplicatesList');
+            
+            container.innerHTML = pairs.map((pair, idx) => `
+                <div class="duplicate-pair" id="pair-${idx}">
+                    <div class="pair-header">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-exclamation-triangle" style="color: #f85149;"></i>
+                            <span style="font-weight: 600; font-size: 0.85rem;">Potential Duplicate Pair #${idx + 1}</span>
+                        </div>
+                        <span class="match-score">${Math.round(pair.score * 100)}% Match</span>
+                    </div>
+                    <div class="pair-body">
+                        <div class="q-side">
+                            <span class="label">Question A</span>
+                            <div class="q-text">${pair.question1.questionText}</div>
+                            <div class="q-meta">
+                                <span><i class="fas fa-book"></i> ${pair.question1.subject}</span>
+                                <span><i class="fas fa-signal"></i> ${pair.question1.difficulty}</span>
+                            </div>
+                        </div>
+                        <div class="q-side">
+                            <span class="label">Question B</span>
+                            <div class="q-text">${pair.question2.questionText}</div>
+                            <div class="q-meta">
+                                <span><i class="fas fa-book"></i> ${pair.question2.subject}</span>
+                                <span><i class="fas fa-signal"></i> ${pair.question2.difficulty}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pair-footer">
+                        <button class="btn-action" onclick="ignorePair(${idx})">Ignore</button>
+                        <button class="btn-action btn-merge" onclick="ignorePair(${idx})">Keep Both (Unique)</button>
+                        <button class="btn-action btn-delete" onclick="markDuplicate('${pair.question1._id}', '${pair.question2._id}', ${idx})">Keep A (Delete B)</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function markDuplicate(primaryId, duplicateId, index) {
+            if (!confirm('Are you sure you want to mark Question B as a duplicate? It will be deactivated in the database.')) return;
+
+            try {
+                const response = await fetchAPI('/ai/duplicates/mark', {
+                    method: 'POST',
+                    body: JSON.stringify({ primaryId, duplicateId })
+                });
+
+                if (response && response.success) {
+                    const el = document.getElementById(`pair-${index}`);
+                    el.style.opacity = '0.5';
+                    el.style.pointerEvents = 'none';
+                    el.querySelector('.pair-footer').innerHTML = '<span style="color: #3fb950; font-weight: 600;"><i class="fas fa-check"></i> Merged in Database</span>';
+                }
+            } catch (error) {
+                console.error('Error marking duplicate:', error);
+                alert('Failed to update database.');
+            }
+        }
+
+        function ignorePair(index) {
+            const el = document.getElementById(`pair-${index}`);
+            el.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

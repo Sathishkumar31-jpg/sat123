@@ -415,11 +415,13 @@
         const questions = [];
         const cleaned = text.replace(/\s+/g, ' ').trim();
 
-        // Pattern 1: Numbered questions (1. Q? / 1) Q? / Q1: Q?)
+        // Comprehensive patterns: 
+        // 1. Numbered questions: 1. Q? or (1) Q? or Q1: Q? or Question 1. Q?
+        // 2. Question words at start: What, How, Why, Define, Explain, etc.
         const patterns = [
-            /(?:^|\s)(\d{1,2}[\.\)]\s+)([A-Z][^?!.]*\?)/gm,
-            /(?:^|\s)([Qq]\.?\s*\d+[\.:]\s*)([A-Z][^?!.]*\?)/gm,
-            /(?:^|\s)((?:What|How|Why|Explain|Define|Describe|List|Compare|Discuss|State|Differentiate|Write|Find|Calculate|Solve|Prove|Show)[^?!.]{10,}[?.])/gm,
+            /(?:^|\s|\.)(\d{1,2}[\.\)]\s+)([A-Z][^?!.]{10,}\?)/g,
+            /(?:^|\s|\.)(Q(?:uestion)?\s*\d+[\.:]?\s+)([A-Z][^?!.]{10,}\?)/gi,
+            /(?:^|\s|\.)((?:What|How|Why|Define|Explain|Describe|List|Compare|Discuss|State|Differentiate|Calculate|Solve|Prove|Show|Illustrate|Justify|Analyze)[^?!.]{15,}[?.])/g
         ];
 
         const seen = new Set();
@@ -427,23 +429,35 @@
             let match;
             pat.lastIndex = 0;
             while ((match = pat.exec(cleaned)) !== null) {
-                const q = (match[2] || match[1] || '').trim().replace(/\s+/g, ' ');
-                if (q.length > 15 && q.length < 400 && !seen.has(q.toLowerCase().substring(0, 50))) {
-                    seen.add(q.toLowerCase().substring(0, 50));
-                    questions.push(q);
+                // The actual question text is usually in the last group
+                const q = (match[match.length - 1]).trim();
+                
+                // Length filters and duplicate prevention
+                if (q.length > 20 && q.length < 500) {
+                    const normalized = q.toLowerCase().substring(0, 60);
+                    if (!seen.has(normalized)) {
+                        seen.add(normalized);
+                        questions.push(q);
+                    }
                 }
-                if (questions.length >= 30) break;
+                if (questions.length >= 40) break;
             }
-            if (questions.length >= 30) break;
+            if (questions.length >= 40) break;
         }
 
-        // Fallback: split by sentence if nothing found
+        // Fallback: If nothing found, try splitting by question mark
         if (questions.length === 0) {
-            const sentences = cleaned.split(/[.!?]/).filter(s => s.trim().length > 20 && /^[A-Z]/.test(s.trim()));
-            sentences.slice(0, 15).forEach(s => questions.push(s.trim() + '?'));
+            const segments = cleaned.split('?');
+            for (let seg of segments) {
+                const trimmed = seg.trim();
+                const lastSentence = trimmed.split('.').pop().trim();
+                if (lastSentence.length > 25 && /^[A-Z]/.test(lastSentence)) {
+                    questions.push(lastSentence + '?');
+                }
+            }
         }
 
-        return questions.slice(0, 20);
+        return questions.slice(0, 30);
     }
 
     // ── Show Extracted Preview ────────────────────────────────

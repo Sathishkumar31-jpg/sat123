@@ -26,10 +26,7 @@ const analyzeQuestion = async (req, res) => {
             question
         });
 
-        res.json({
-            success: true,
-            data: response.data
-        });
+        res.json(response.data);
     } catch (error) {
         console.error('AI analysis error:', error.message);
         res.status(500).json({
@@ -71,10 +68,7 @@ const findSimilarQuestions = async (req, res) => {
                 }))
             });
 
-            return res.json({
-                success: true,
-                data: response.data
-            });
+            return res.json(response.data);
         } catch (aiError) {
             console.warn('AI Service unreachable, using Demo Mode fallback...');
             
@@ -151,10 +145,7 @@ const predictDifficulty = async (req, res) => {
             question
         });
 
-        res.json({
-            success: true,
-            data: response.data
-        });
+        res.json(response.data);
     } catch (error) {
         console.error('Difficulty prediction error:', error.message);
         res.status(500).json({
@@ -184,10 +175,7 @@ const predictSubject = async (req, res) => {
             question
         });
 
-        res.json({
-            success: true,
-            data: response.data
-        });
+        res.json(response.data);
     } catch (error) {
         console.error('Subject prediction error:', error.message);
         res.status(500).json({
@@ -217,10 +205,7 @@ const predictBloom = async (req, res) => {
             question
         });
 
-        res.json({
-            success: true,
-            data: response.data
-        });
+        res.json(response.data);
     } catch (error) {
         console.error('Bloom prediction error:', error.message);
         res.status(500).json({
@@ -250,10 +235,7 @@ const autoTag = async (req, res) => {
             questions
         });
 
-        res.json({
-            success: true,
-            data: response.data
-        });
+        res.json(response.data);
     } catch (error) {
         console.error('Auto-tagging error:', error.message);
         res.status(500).json({
@@ -270,21 +252,57 @@ const autoTag = async (req, res) => {
 
 const findDuplicates = async (req, res) => {
     try {
-        const { threshold = 0.8 } = req.body;
+        const { threshold = 0.85 } = req.body;
 
-        const response = await axios.post(`${AI_SERVICE_URL}/duplicates`, {
+        // Fetch all active questions from DB
+        const questions = await Question.find({ isActive: true })
+            .select('questionText subject difficulty')
+            .lean();
+
+        const response = await axios.post(`${AI_SERVICE_URL}/similarity/find`, {
+            questions,
             threshold
         });
 
-        res.json({
-            success: true,
-            data: response.data
-        });
+        res.json(response.data);
     } catch (error) {
         console.error('Duplicate detection error:', error.message);
         res.status(500).json({
             success: false,
             message: 'Error detecting duplicates',
+            error: error.message
+        });
+    }
+};
+
+const markAsDuplicate = async (req, res) => {
+    try {
+        const { primaryId, duplicateId } = req.body;
+
+        if (!primaryId || !duplicateId) {
+            return res.status(400).json({
+                success: false,
+                message: 'Both primaryId and duplicateId are required'
+            });
+        }
+
+        const Question = require('../models/Question');
+        
+        // Update the duplicate question
+        await Question.findByIdAndUpdate(duplicateId, {
+            'similarity.duplicateOf': primaryId,
+            isActive: false // Optionally deactivate it
+        });
+
+        res.json({
+            success: true,
+            message: 'Question marked as duplicate successfully'
+        });
+    } catch (error) {
+        console.error('Error marking duplicate:', error.message);
+        res.status(500).json({
+            success: false,
+            message: 'Error marking duplicate',
             error: error.message
         });
     }
@@ -297,5 +315,6 @@ module.exports = {
     predictSubject,
     predictBloom,
     autoTag,
-    findDuplicates
+    findDuplicates,
+    markAsDuplicate
 };

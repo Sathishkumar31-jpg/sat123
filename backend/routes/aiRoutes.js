@@ -15,5 +15,6 @@ router.post('/subject', aiController.predictSubject);
 router.post('/bloom', aiController.predictBloom);
 router.post('/autotag', aiController.autoTag);
 router.post('/duplicates', optionalAuth, aiController.findDuplicates);
+router.post('/duplicates/mark', optionalAuth, aiController.markAsDuplicate);
 
 module.exports = router;

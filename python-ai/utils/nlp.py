@@ -10,6 +10,20 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import logging
+import io
+
+# Optional libs for PDF/image text extraction
+try:
+    import PyPDF2
+except Exception:
+    PyPDF2 = None
+
+try:
+    from PIL import Image
+    import pytesseract
+except Exception:
+    Image = None
+    pytesseract = None
 
 logger = logging.getLogger(__name__)
 
@@ -185,3 +199,46 @@ def calculate_quality_score(text):
     except Exception as e:
         logger.error(f"Error calculating quality score: {str(e)}")
         return {}
+
+
+# ===================================
+# PDF / IMAGE TEXT EXTRACTION HELPERS
+# ===================================
+
+def extract_text_from_pdf(file_path):
+    """
+    Extract text from a PDF file using PyPDF2 if available
+    """
+    try:
+        if PyPDF2 is None:
+            logger.warning('PyPDF2 not installed; cannot extract PDF text')
+            return ''
+
+        text_parts = []
+        with open(file_path, 'rb') as f:
+            reader = PyPDF2.PdfReader(f)
+            for page in reader.pages:
+                page_text = page.extract_text() or ''
+                text_parts.append(page_text)
+
+        return '\n'.join(text_parts)
+    except Exception as e:
+        logger.error(f"Error extracting text from PDF {file_path}: {str(e)}")
+        return ''
+
+
+def extract_text_from_image(file_path):
+    """
+    Extract text from an image using pytesseract if available
+    """
+    try:
+        if Image is None or pytesseract is None:
+            logger.warning('Pillow or pytesseract not installed; cannot extract image text')
+            return ''
+
+        img = Image.open(file_path)
+        text = pytesseract.image_to_string(img)
+        return text
+    except Exception as e:
+        logger.error(f"Error extracting text from image {file_path}: {str(e)}")
+        return ''

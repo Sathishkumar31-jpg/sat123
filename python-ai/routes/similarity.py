@@ -62,7 +62,7 @@ def find_similar():
     try:
         data = request.get_json()
         question = data.get('question', '').strip()
-        threshold = float(data.get('threshold', 0.7)) / 100  # Convert percentage to decimal
+        threshold = float(data.get('threshold', 0.25))  # Use decimal directly (e.g. 0.25 for 25%)
         max_results = int(data.get('maxResults', 10))
 
         if not question:
@@ -145,5 +145,57 @@ def compute_score():
         return jsonify({
             'success': False,
             'message': 'Error computing similarity',
+            'error': str(e)
+        }), 500
+
+# ===================================
+# FIND DUPLICATES IN A LIST
+# ===================================
+
+@similarity_bp.route('/find', methods=['POST'])
+def find_duplicates_in_list():
+    """
+    Find duplicate questions within a provided list
+    """
+    try:
+        data = request.get_json()
+        questions = data.get('questions', [])
+        threshold = float(data.get('threshold', 0.85))
+
+        if not questions or len(questions) < 2:
+            return jsonify({
+                'success': True,
+                'data': {'duplicates': []}
+            }), 200
+
+        duplicates = []
+        # Simple O(n^2) check for small sets (realistic for this project's current scope)
+        for i in range(len(questions)):
+            for j in range(i + 1, len(questions)):
+                q1 = questions[i]
+                q2 = questions[j]
+                
+                score = compute_similarity(q1['questionText'], q2['questionText'])
+                
+                if score >= threshold:
+                    duplicates.append({
+                        'question1': q1,
+                        'question2': q2,
+                        'score': float(score)
+                    })
+
+        return jsonify({
+            'success': True,
+            'data': {
+                'duplicates': duplicates,
+                'count': len(duplicates)
+            }
+        }), 200
+
+    except Exception as e:
+        logger.error(f"Error finding duplicates: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': 'Error finding duplicates',
             'error': str(e)
         }), 500

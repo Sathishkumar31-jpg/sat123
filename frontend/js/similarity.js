@@ -33,20 +33,27 @@ async function findSimilarQuestions(e) {
     if (noResults) noResults.style.display = 'none';
 
     try {
-        const data = await fetchAPI('/ai/similarity', {
+        const token = getToken();
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        const rawRes = await fetch(`http://localhost:5000/api/ai/similarity`, {
             method: 'POST',
+            headers,
             body: JSON.stringify({
                 question: searchQuery,
-                threshold: 0.25,   // Only return genuinely similar results
-                maxResults: 8
+                threshold: 0.1,
+                maxResults: 10
             })
         });
+        const data = await rawRes.json();
 
         if (searchLoading) searchLoading.style.display = 'none';
 
-        if (data && data.success && data.data && data.data.results) {
-            // Filter: only show results with >= 25% similarity
-            const results = data.data.results.filter(r => r.similarity >= 0.25);
+        if (data && data.success && data.data) {
+            // Support both data.data.results and data.results
+            const rawResults = data.data.results || data.results || [];
+            const results = rawResults.filter(r => r.similarity >= 0.1);
 
             if (results.length > 0) {
                 // Check for near-exact duplicate
