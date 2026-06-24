@@ -3,7 +3,7 @@
 // ===================================
 
 let currentPage = 1;
-let pageSize = 10;
+let pageSize = 50;
 let totalPages = 1;
 
 // ===================================
@@ -92,9 +92,12 @@ function populateQuestionsTable(questions) {
             <td><span class="bloom-pill">${q.bloomLevel || 'Understand'}</span></td>
             <td>
                 <div class="action-btns">
-                    <div class="icon-btn" title="Inspiration"><i class="far fa-lightbulb"></i></div>
-                    <div class="icon-btn" title="Edit" onclick="location.href='edit-question.html?id=${q._id}'"><i class="far fa-edit"></i></div>
-                    <div class="icon-btn del" title="Delete" onclick="confirmDelete('${q._id}')"><i class="far fa-trash-alt"></i></div>
+                    <button class="icon-btn" title="Edit Question" onclick="location.href='edit-question.html?id=${q._id}'">
+                        <i class="far fa-edit"></i>
+                    </button>
+                    <button class="icon-btn del" title="Delete" onclick="confirmDelete('${q._id}')">
+                        <i class="far fa-trash-alt"></i>
+                    </button>
                 </div>
             </td>
         </tr>`;

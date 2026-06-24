@@ -310,11 +310,29 @@ async function seed() {
             console.log('Created admin user: sathishkumar843');
         }
 
+        // Load questions from JSON file if it exists, otherwise use internal array
+        let questionsToSeed = questions;
+        const fs = require('fs');
+        const path = require('path');
+        const jsonPath = path.join(__dirname, 'questions.json');
+        
+        if (fs.existsSync(jsonPath)) {
+            try {
+                const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+                if (Array.isArray(jsonData)) {
+                    questionsToSeed = jsonData;
+                    console.log(`Loaded ${questionsToSeed.length} questions from questions.json`);
+                }
+            } catch (err) {
+                console.error('Error parsing questions.json, using internal array:', err);
+            }
+        }
+
         // Add creator ID and options
-        const seededQuestions = questions.map(q => ({
+        const seededQuestions = questionsToSeed.map(q => ({
             ...q,
             createdBy: user._id,
-            options: [
+            options: q.options || [
                 { letter: 'A', text: q.correctAnswer },
                 { letter: 'B', text: "Sample wrong option 1" },
                 { letter: 'C', text: "Sample wrong option 2" },

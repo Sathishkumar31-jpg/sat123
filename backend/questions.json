@@ -1,0 +1,1552 @@
+[
+    {
+        "questionText": "What is the SI unit of Force?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Newton"
+            },
+            {
+                "letter": "B",
+                "text": "Joule"
+            },
+            {
+                "letter": "C",
+                "text": "Watt"
+            },
+            {
+                "letter": "D",
+                "text": "Pascal"
+            }
+        ],
+        "correctAnswer": "Newton",
+        "explanation": "Force is measured in Newton (N).",
+        "tags": [
+            "Physics",
+            "Force"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Who discovered gravity?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Isaac Newton"
+            },
+            {
+                "letter": "B",
+                "text": "Albert Einstein"
+            },
+            {
+                "letter": "C",
+                "text": "Galileo"
+            },
+            {
+                "letter": "D",
+                "text": "Nikola Tesla"
+            }
+        ],
+        "correctAnswer": "Isaac Newton",
+        "explanation": "Newton formulated the law of gravitation.",
+        "tags": [
+            "Physics",
+            "Gravity"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the speed of light in vacuum?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "3×10^8 m/s"
+            },
+            {
+                "letter": "B",
+                "text": "3×10^6 m/s"
+            },
+            {
+                "letter": "C",
+                "text": "3×10^5 m/s"
+            },
+            {
+                "letter": "D",
+                "text": "3×10^7 m/s"
+            }
+        ],
+        "correctAnswer": "3×10^8 m/s",
+        "explanation": "Speed of light in vacuum is approximately 3×10^8 m/s.",
+        "tags": [
+            "Physics",
+            "Light"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which energy is stored in a stretched spring?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Understand",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Potential Energy"
+            },
+            {
+                "letter": "B",
+                "text": "Kinetic Energy"
+            },
+            {
+                "letter": "C",
+                "text": "Thermal Energy"
+            },
+            {
+                "letter": "D",
+                "text": "Electrical Energy"
+            }
+        ],
+        "correctAnswer": "Potential Energy",
+        "explanation": "A stretched spring stores potential energy.",
+        "tags": [
+            "Physics",
+            "Energy"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the SI unit of Power?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Watt"
+            },
+            {
+                "letter": "B",
+                "text": "Joule"
+            },
+            {
+                "letter": "C",
+                "text": "Newton"
+            },
+            {
+                "letter": "D",
+                "text": "Ampere"
+            }
+        ],
+        "correctAnswer": "Watt",
+        "explanation": "Power is measured in Watts.",
+        "tags": [
+            "Physics",
+            "Power"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which mirror is used in vehicles?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Convex Mirror"
+            },
+            {
+                "letter": "B",
+                "text": "Plane Mirror"
+            },
+            {
+                "letter": "C",
+                "text": "Concave Mirror"
+            },
+            {
+                "letter": "D",
+                "text": "None"
+            }
+        ],
+        "correctAnswer": "Convex Mirror",
+        "explanation": "Convex mirrors provide a wider field of view.",
+        "tags": [
+            "Physics",
+            "Mirrors"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the unit of electric current?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Ampere"
+            },
+            {
+                "letter": "B",
+                "text": "Volt"
+            },
+            {
+                "letter": "C",
+                "text": "Ohm"
+            },
+            {
+                "letter": "D",
+                "text": "Watt"
+            }
+        ],
+        "correctAnswer": "Ampere",
+        "explanation": "Electric current is measured in amperes.",
+        "tags": [
+            "Physics",
+            "Electricity"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which instrument measures temperature?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Thermometer"
+            },
+            {
+                "letter": "B",
+                "text": "Barometer"
+            },
+            {
+                "letter": "C",
+                "text": "Ammeter"
+            },
+            {
+                "letter": "D",
+                "text": "Voltmeter"
+            }
+        ],
+        "correctAnswer": "Thermometer",
+        "explanation": "Thermometer measures temperature.",
+        "tags": [
+            "Physics",
+            "Temperature"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What causes a rainbow?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Understand",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Dispersion"
+            },
+            {
+                "letter": "B",
+                "text": "Reflection"
+            },
+            {
+                "letter": "C",
+                "text": "Diffraction"
+            },
+            {
+                "letter": "D",
+                "text": "Polarization"
+            }
+        ],
+        "correctAnswer": "Dispersion",
+        "explanation": "Rainbow is formed due to dispersion of sunlight.",
+        "tags": [
+            "Physics",
+            "Optics"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which law states F = ma?",
+        "subject": "Physics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Newton's Second Law"
+            },
+            {
+                "letter": "B",
+                "text": "Newton's First Law"
+            },
+            {
+                "letter": "C",
+                "text": "Newton's Third Law"
+            },
+            {
+                "letter": "D",
+                "text": "Law of Gravitation"
+            }
+        ],
+        "correctAnswer": "Newton's Second Law",
+        "explanation": "Force equals mass multiplied by acceleration.",
+        "tags": [
+            "Physics",
+            "Laws"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is 12 × 8?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Apply",
+        "options": [
+            {
+                "letter": "A",
+                "text": "96"
+            },
+            {
+                "letter": "B",
+                "text": "88"
+            },
+            {
+                "letter": "C",
+                "text": "92"
+            },
+            {
+                "letter": "D",
+                "text": "108"
+            }
+        ],
+        "correctAnswer": "96",
+        "explanation": "12 multiplied by 8 equals 96.",
+        "tags": [
+            "Mathematics",
+            "Arithmetic"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the square root of 64?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "8"
+            },
+            {
+                "letter": "B",
+                "text": "6"
+            },
+            {
+                "letter": "C",
+                "text": "7"
+            },
+            {
+                "letter": "D",
+                "text": "9"
+            }
+        ],
+        "correctAnswer": "8",
+        "explanation": "8 × 8 = 64.",
+        "tags": [
+            "Mathematics",
+            "Square Root"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is 25% of 200?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Apply",
+        "options": [
+            {
+                "letter": "A",
+                "text": "50"
+            },
+            {
+                "letter": "B",
+                "text": "25"
+            },
+            {
+                "letter": "C",
+                "text": "75"
+            },
+            {
+                "letter": "D",
+                "text": "100"
+            }
+        ],
+        "correctAnswer": "50",
+        "explanation": "25% of 200 is 50.",
+        "tags": [
+            "Mathematics",
+            "Percentage"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the approximate value of π?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "3.14"
+            },
+            {
+                "letter": "B",
+                "text": "2.14"
+            },
+            {
+                "letter": "C",
+                "text": "4.14"
+            },
+            {
+                "letter": "D",
+                "text": "5.14"
+            }
+        ],
+        "correctAnswer": "3.14",
+        "explanation": "Pi is approximately 3.14.",
+        "tags": [
+            "Mathematics",
+            "Pi"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is 15 + 27?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Apply",
+        "options": [
+            {
+                "letter": "A",
+                "text": "42"
+            },
+            {
+                "letter": "B",
+                "text": "41"
+            },
+            {
+                "letter": "C",
+                "text": "43"
+            },
+            {
+                "letter": "D",
+                "text": "44"
+            }
+        ],
+        "correctAnswer": "42",
+        "explanation": "15 + 27 = 42.",
+        "tags": [
+            "Mathematics",
+            "Addition"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "How many degrees are in a right angle?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "90"
+            },
+            {
+                "letter": "B",
+                "text": "45"
+            },
+            {
+                "letter": "C",
+                "text": "180"
+            },
+            {
+                "letter": "D",
+                "text": "360"
+            }
+        ],
+        "correctAnswer": "90",
+        "explanation": "A right angle measures 90 degrees.",
+        "tags": [
+            "Mathematics",
+            "Geometry"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is 9²?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Apply",
+        "options": [
+            {
+                "letter": "A",
+                "text": "81"
+            },
+            {
+                "letter": "B",
+                "text": "72"
+            },
+            {
+                "letter": "C",
+                "text": "18"
+            },
+            {
+                "letter": "D",
+                "text": "99"
+            }
+        ],
+        "correctAnswer": "81",
+        "explanation": "9 × 9 = 81.",
+        "tags": [
+            "Mathematics",
+            "Squares"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the perimeter of a square with side 5 cm?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Apply",
+        "options": [
+            {
+                "letter": "A",
+                "text": "20 cm"
+            },
+            {
+                "letter": "B",
+                "text": "10 cm"
+            },
+            {
+                "letter": "C",
+                "text": "15 cm"
+            },
+            {
+                "letter": "D",
+                "text": "25 cm"
+            }
+        ],
+        "correctAnswer": "20 cm",
+        "explanation": "Perimeter of a square = 4 × side.",
+        "tags": [
+            "Mathematics",
+            "Geometry"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is 100 ÷ 4?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Apply",
+        "options": [
+            {
+                "letter": "A",
+                "text": "25"
+            },
+            {
+                "letter": "B",
+                "text": "20"
+            },
+            {
+                "letter": "C",
+                "text": "30"
+            },
+            {
+                "letter": "D",
+                "text": "40"
+            }
+        ],
+        "correctAnswer": "25",
+        "explanation": "100 divided by 4 equals 25.",
+        "tags": [
+            "Mathematics",
+            "Division"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which number is a prime number?",
+        "subject": "Mathematics",
+        "difficulty": "Easy",
+        "bloomLevel": "Understand",
+        "options": [
+            {
+                "letter": "A",
+                "text": "7"
+            },
+            {
+                "letter": "B",
+                "text": "4"
+            },
+            {
+                "letter": "C",
+                "text": "6"
+            },
+            {
+                "letter": "D",
+                "text": "8"
+            }
+        ],
+        "correctAnswer": "7",
+        "explanation": "7 has only two factors: 1 and 7.",
+        "tags": [
+            "Mathematics",
+            "Prime Numbers"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the chemical formula of water?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "H2O"
+            },
+            {
+                "letter": "B",
+                "text": "CO2"
+            },
+            {
+                "letter": "C",
+                "text": "O2"
+            },
+            {
+                "letter": "D",
+                "text": "H2SO4"
+            }
+        ],
+        "correctAnswer": "H2O",
+        "explanation": "Water contains two hydrogen atoms and one oxygen atom.",
+        "tags": [
+            "Chemistry",
+            "Compounds"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the symbol of Oxygen?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "O"
+            },
+            {
+                "letter": "B",
+                "text": "Ox"
+            },
+            {
+                "letter": "C",
+                "text": "Og"
+            },
+            {
+                "letter": "D",
+                "text": "Om"
+            }
+        ],
+        "correctAnswer": "O",
+        "explanation": "The chemical symbol of oxygen is O.",
+        "tags": [
+            "Chemistry",
+            "Elements"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which gas is essential for respiration?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Oxygen"
+            },
+            {
+                "letter": "B",
+                "text": "Nitrogen"
+            },
+            {
+                "letter": "C",
+                "text": "Hydrogen"
+            },
+            {
+                "letter": "D",
+                "text": "Helium"
+            }
+        ],
+        "correctAnswer": "Oxygen",
+        "explanation": "Humans require oxygen for respiration.",
+        "tags": [
+            "Chemistry",
+            "Gases"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the pH value of pure water?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "7"
+            },
+            {
+                "letter": "B",
+                "text": "5"
+            },
+            {
+                "letter": "C",
+                "text": "8"
+            },
+            {
+                "letter": "D",
+                "text": "10"
+            }
+        ],
+        "correctAnswer": "7",
+        "explanation": "Pure water is neutral with pH 7.",
+        "tags": [
+            "Chemistry",
+            "pH"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the atomic number of Hydrogen?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "1"
+            },
+            {
+                "letter": "B",
+                "text": "2"
+            },
+            {
+                "letter": "C",
+                "text": "3"
+            },
+            {
+                "letter": "D",
+                "text": "4"
+            }
+        ],
+        "correctAnswer": "1",
+        "explanation": "Hydrogen is the first element in the periodic table.",
+        "tags": [
+            "Chemistry",
+            "Atomic Number"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "NaCl is commonly known as?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Salt"
+            },
+            {
+                "letter": "B",
+                "text": "Sugar"
+            },
+            {
+                "letter": "C",
+                "text": "Baking Soda"
+            },
+            {
+                "letter": "D",
+                "text": "Vinegar"
+            }
+        ],
+        "correctAnswer": "Salt",
+        "explanation": "NaCl is common table salt.",
+        "tags": [
+            "Chemistry",
+            "Compounds"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which gas is commonly used in balloons?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Helium"
+            },
+            {
+                "letter": "B",
+                "text": "Oxygen"
+            },
+            {
+                "letter": "C",
+                "text": "Nitrogen"
+            },
+            {
+                "letter": "D",
+                "text": "Carbon Dioxide"
+            }
+        ],
+        "correctAnswer": "Helium",
+        "explanation": "Helium is lighter than air and non-flammable.",
+        "tags": [
+            "Chemistry",
+            "Gases"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the chemical symbol for Gold?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Au"
+            },
+            {
+                "letter": "B",
+                "text": "Ag"
+            },
+            {
+                "letter": "C",
+                "text": "Go"
+            },
+            {
+                "letter": "D",
+                "text": "Gd"
+            }
+        ],
+        "correctAnswer": "Au",
+        "explanation": "Gold is represented by the symbol Au.",
+        "tags": [
+            "Chemistry",
+            "Elements"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which acid is present in lemons?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Citric Acid"
+            },
+            {
+                "letter": "B",
+                "text": "Sulfuric Acid"
+            },
+            {
+                "letter": "C",
+                "text": "Hydrochloric Acid"
+            },
+            {
+                "letter": "D",
+                "text": "Nitric Acid"
+            }
+        ],
+        "correctAnswer": "Citric Acid",
+        "explanation": "Lemons contain citric acid.",
+        "tags": [
+            "Chemistry",
+            "Acids"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the atomic number of Carbon?",
+        "subject": "Chemistry",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "6"
+            },
+            {
+                "letter": "B",
+                "text": "8"
+            },
+            {
+                "letter": "C",
+                "text": "12"
+            },
+            {
+                "letter": "D",
+                "text": "14"
+            }
+        ],
+        "correctAnswer": "6",
+        "explanation": "Carbon has atomic number 6.",
+        "tags": [
+            "Chemistry",
+            "Atomic Number"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What does CPU stand for?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Central Processing Unit"
+            },
+            {
+                "letter": "B",
+                "text": "Computer Processing Unit"
+            },
+            {
+                "letter": "C",
+                "text": "Central Program Unit"
+            },
+            {
+                "letter": "D",
+                "text": "Control Processing Unit"
+            }
+        ],
+        "correctAnswer": "Central Processing Unit",
+        "explanation": "CPU is the brain of the computer.",
+        "tags": [
+            "Computer Science",
+            "Hardware"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which data structure follows FIFO?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Understand",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Queue"
+            },
+            {
+                "letter": "B",
+                "text": "Stack"
+            },
+            {
+                "letter": "C",
+                "text": "Tree"
+            },
+            {
+                "letter": "D",
+                "text": "Graph"
+            }
+        ],
+        "correctAnswer": "Queue",
+        "explanation": "Queue follows First In First Out principle.",
+        "tags": [
+            "Computer Science",
+            "Data Structures"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What does RAM stand for?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Random Access Memory"
+            },
+            {
+                "letter": "B",
+                "text": "Read Access Memory"
+            },
+            {
+                "letter": "C",
+                "text": "Rapid Access Memory"
+            },
+            {
+                "letter": "D",
+                "text": "Run Access Memory"
+            }
+        ],
+        "correctAnswer": "Random Access Memory",
+        "explanation": "RAM stores temporary data used by programs.",
+        "tags": [
+            "Computer Science",
+            "Memory"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which language is used for webpage structure?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "HTML"
+            },
+            {
+                "letter": "B",
+                "text": "CSS"
+            },
+            {
+                "letter": "C",
+                "text": "JavaScript"
+            },
+            {
+                "letter": "D",
+                "text": "Python"
+            }
+        ],
+        "correctAnswer": "HTML",
+        "explanation": "HTML defines the structure of a webpage.",
+        "tags": [
+            "Computer Science",
+            "Web Development"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What does URL stand for?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Uniform Resource Locator"
+            },
+            {
+                "letter": "B",
+                "text": "Universal Resource Link"
+            },
+            {
+                "letter": "C",
+                "text": "Uniform Reference Link"
+            },
+            {
+                "letter": "D",
+                "text": "Universal Routing Locator"
+            }
+        ],
+        "correctAnswer": "Uniform Resource Locator",
+        "explanation": "URL is the address of a resource on the internet.",
+        "tags": [
+            "Computer Science",
+            "Internet"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which company developed Windows?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Microsoft"
+            },
+            {
+                "letter": "B",
+                "text": "Google"
+            },
+            {
+                "letter": "C",
+                "text": "Apple"
+            },
+            {
+                "letter": "D",
+                "text": "IBM"
+            }
+        ],
+        "correctAnswer": "Microsoft",
+        "explanation": "Microsoft developed the Windows operating system.",
+        "tags": [
+            "Computer Science",
+            "Operating Systems"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which protocol is used for web browsing?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "HTTP"
+            },
+            {
+                "letter": "B",
+                "text": "FTP"
+            },
+            {
+                "letter": "C",
+                "text": "SMTP"
+            },
+            {
+                "letter": "D",
+                "text": "POP3"
+            }
+        ],
+        "correctAnswer": "HTTP",
+        "explanation": "HTTP is used to transfer web pages.",
+        "tags": [
+            "Computer Science",
+            "Networking"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which number system do computers use?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Binary"
+            },
+            {
+                "letter": "B",
+                "text": "Decimal"
+            },
+            {
+                "letter": "C",
+                "text": "Octal"
+            },
+            {
+                "letter": "D",
+                "text": "Hexadecimal"
+            }
+        ],
+        "correctAnswer": "Binary",
+        "explanation": "Computers process data using 0s and 1s.",
+        "tags": [
+            "Computer Science",
+            "Number Systems"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What does AI stand for?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Artificial Intelligence"
+            },
+            {
+                "letter": "B",
+                "text": "Automatic Intelligence"
+            },
+            {
+                "letter": "C",
+                "text": "Advanced Intelligence"
+            },
+            {
+                "letter": "D",
+                "text": "Applied Intelligence"
+            }
+        ],
+        "correctAnswer": "Artificial Intelligence",
+        "explanation": "AI enables machines to perform tasks requiring intelligence.",
+        "tags": [
+            "Computer Science",
+            "AI"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which device is an output device?",
+        "subject": "Computer Science",
+        "difficulty": "Easy",
+        "bloomLevel": "Understand",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Monitor"
+            },
+            {
+                "letter": "B",
+                "text": "Keyboard"
+            },
+            {
+                "letter": "C",
+                "text": "Mouse"
+            },
+            {
+                "letter": "D",
+                "text": "Scanner"
+            }
+        ],
+        "correctAnswer": "Monitor",
+        "explanation": "Monitor displays information generated by the computer.",
+        "tags": [
+            "Computer Science",
+            "Hardware"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which organ pumps blood throughout the body?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Heart"
+            },
+            {
+                "letter": "B",
+                "text": "Lungs"
+            },
+            {
+                "letter": "C",
+                "text": "Kidney"
+            },
+            {
+                "letter": "D",
+                "text": "Brain"
+            }
+        ],
+        "correctAnswer": "Heart",
+        "explanation": "The heart pumps blood throughout the body.",
+        "tags": [
+            "Biology",
+            "Human Body"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the basic unit of life?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Cell"
+            },
+            {
+                "letter": "B",
+                "text": "Tissue"
+            },
+            {
+                "letter": "C",
+                "text": "Organ"
+            },
+            {
+                "letter": "D",
+                "text": "Organism"
+            }
+        ],
+        "correctAnswer": "Cell",
+        "explanation": "The cell is the basic structural and functional unit of life.",
+        "tags": [
+            "Biology",
+            "Cells"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which organ is responsible for breathing?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Lungs"
+            },
+            {
+                "letter": "B",
+                "text": "Heart"
+            },
+            {
+                "letter": "C",
+                "text": "Liver"
+            },
+            {
+                "letter": "D",
+                "text": "Kidney"
+            }
+        ],
+        "correctAnswer": "Lungs",
+        "explanation": "Lungs help in the exchange of oxygen and carbon dioxide.",
+        "tags": [
+            "Biology",
+            "Respiratory System"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the largest organ in the human body?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Skin"
+            },
+            {
+                "letter": "B",
+                "text": "Liver"
+            },
+            {
+                "letter": "C",
+                "text": "Brain"
+            },
+            {
+                "letter": "D",
+                "text": "Heart"
+            }
+        ],
+        "correctAnswer": "Skin",
+        "explanation": "Skin is the largest organ in the human body.",
+        "tags": [
+            "Biology",
+            "Human Body"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which vitamin is produced when the skin is exposed to sunlight?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Vitamin D"
+            },
+            {
+                "letter": "B",
+                "text": "Vitamin A"
+            },
+            {
+                "letter": "C",
+                "text": "Vitamin B12"
+            },
+            {
+                "letter": "D",
+                "text": "Vitamin C"
+            }
+        ],
+        "correctAnswer": "Vitamin D",
+        "explanation": "Sunlight helps the body produce Vitamin D.",
+        "tags": [
+            "Biology",
+            "Nutrition"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is known as the powerhouse of the cell?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Mitochondria"
+            },
+            {
+                "letter": "B",
+                "text": "Nucleus"
+            },
+            {
+                "letter": "C",
+                "text": "Ribosome"
+            },
+            {
+                "letter": "D",
+                "text": "Golgi Apparatus"
+            }
+        ],
+        "correctAnswer": "Mitochondria",
+        "explanation": "Mitochondria generate energy for the cell.",
+        "tags": [
+            "Biology",
+            "Cells"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which blood cells help fight infections?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "White Blood Cells"
+            },
+            {
+                "letter": "B",
+                "text": "Red Blood Cells"
+            },
+            {
+                "letter": "C",
+                "text": "Platelets"
+            },
+            {
+                "letter": "D",
+                "text": "Plasma Cells"
+            }
+        ],
+        "correctAnswer": "White Blood Cells",
+        "explanation": "White blood cells protect the body from infections.",
+        "tags": [
+            "Biology",
+            "Blood"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which gas do plants absorb during photosynthesis?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Carbon Dioxide"
+            },
+            {
+                "letter": "B",
+                "text": "Oxygen"
+            },
+            {
+                "letter": "C",
+                "text": "Nitrogen"
+            },
+            {
+                "letter": "D",
+                "text": "Hydrogen"
+            }
+        ],
+        "correctAnswer": "Carbon Dioxide",
+        "explanation": "Plants absorb carbon dioxide and release oxygen.",
+        "tags": [
+            "Biology",
+            "Photosynthesis"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "What is the largest bone in the human body?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Femur"
+            },
+            {
+                "letter": "B",
+                "text": "Tibia"
+            },
+            {
+                "letter": "C",
+                "text": "Humerus"
+            },
+            {
+                "letter": "D",
+                "text": "Radius"
+            }
+        ],
+        "correctAnswer": "Femur",
+        "explanation": "The femur is the longest and strongest bone in the body.",
+        "tags": [
+            "Biology",
+            "Skeletal System"
+        ],
+        "status": "published"
+    },
+    {
+        "questionText": "Which part of the plant absorbs water and minerals from the soil?",
+        "subject": "Biology",
+        "difficulty": "Easy",
+        "bloomLevel": "Remember",
+        "options": [
+            {
+                "letter": "A",
+                "text": "Root"
+            },
+            {
+                "letter": "B",
+                "text": "Stem"
+            },
+            {
+                "letter": "C",
+                "text": "Leaf"
+            },
+            {
+                "letter": "D",
+                "text": "Flower"
+            }
+        ],
+        "correctAnswer": "Root",
+        "explanation": "Roots absorb water and minerals from the soil.",
+        "tags": [
+            "Biology",
+            "Plants"
+        ],
+        "status": "published"
+    }
+]
