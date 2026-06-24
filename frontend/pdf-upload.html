@@ -499,29 +499,34 @@
 
             await new Promise(r => setTimeout(r, 80)); // small delay for UX
 
-            // Use demo fetchAPI similarity
+            // Use fetchAPI similarity
             try {
                 const data = await fetchAPI('/ai/similarity', {
                     method: 'POST',
-                    body: JSON.stringify({ question: q, threshold: 0.1, maxResults })
+                    body: JSON.stringify({ question: q, threshold: 0.35, maxResults: maxResults * 2 })
                 });
 
                 if (data && data.success && data.data && data.data.results) {
                     let results = data.data.results;
 
-                    // Filter by subject if selected
+                    // Filter by subject: use the actual 'subject' field from the database record
                     if (subject) {
-                        // Assign subjects based on keyword detection
-                        results = results.map(r => ({
-                            ...r,
-                            detectedSubject: detectSubject(r.questionText)
-                        })).filter(r => !subject || r.detectedSubject === subject || Math.random() > 0.4);
+                        results = results.filter(r => {
+                            const dbSubject = (r.subject || '').toLowerCase();
+                            const filterSubject = subject.toLowerCase();
+                            return dbSubject === filterSubject;
+                        });
                     }
 
+                    // Filter by difficulty: use the actual 'difficulty' field from the database record
                     if (difficulty) {
-                        // Filter by difficulty (demo: random filtering)
-                        results = results.filter(() => Math.random() > 0.3);
+                        results = results.filter(r => {
+                            return (r.difficulty || '').toLowerCase() === difficulty.toLowerCase();
+                        });
                     }
+
+                    // Only show results above a reasonable threshold
+                    results = results.filter(r => r.similarity >= 0.35);
 
                     if (results.length > 0) {
                         allResults.push({ query: q, results: results.slice(0, maxResults), subject });
@@ -586,7 +591,10 @@
         if (score >= 90) scoreClass = 'score-red';
         else if (score >= 50) scoreClass = 'score-yellow';
 
-        const detectedSubj = result.detectedSubject || detectSubject(result.questionText);
+        // Use actual subject from DB, fall back to keyword detection
+        const subjectLabel = result.subject || detectSubject(result.questionText);
+        const diffLabel = result.difficulty || '';
+        const diffColor = diffLabel === 'Hard' ? '#f85149' : diffLabel === 'Medium' ? '#f0883e' : '#3fb950';
 
         return `
             <div class="similar-item">
@@ -594,7 +602,11 @@
                     <div class="sim-num">${idx}</div>
                     <div>
                         <div class="sim-text">${result.questionText}</div>
-                        <div class="sim-subject"><i class="fas fa-book" style="font-size:0.65rem;margin-right:4px;"></i> ${detectedSubj}</div>
+                        <div class="sim-subject">
+                            <i class="fas fa-book" style="font-size:0.65rem;margin-right:4px;"></i>
+                            ${subjectLabel}
+                            ${diffLabel ? `&nbsp;·&nbsp;<span style="color:${diffColor};font-weight:600;">${diffLabel}</span>` : ''}
+                        </div>
                     </div>
                 </div>
                 <div class="score-pill ${scoreClass}">${score}%</div>

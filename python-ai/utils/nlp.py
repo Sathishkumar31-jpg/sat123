@@ -47,12 +47,21 @@ except LookupError:
 # PREPROCESSING
 # ===================================
 
+from nltk.stem import WordNetLemmatizer, PorterStemmer
+
+# ===================================
+# PREPROCESSING
+# ===================================
+
 lemmatizer = WordNetLemmatizer()
+stemmer = PorterStemmer()
 stop_words = set(stopwords.words('english'))
+# Add common question words that aren't in stop_words but we don't want for similarity
+stop_words.update(['what', 'which', 'who', 'how', 'why', 'whose', 'whom', 'where', 'when', 'is', 'are', 'the', 'a', 'an', 'and', 'or', 'but', 'if', 'then', 'else'])
 
 def preprocess_text(text):
     """
-    Preprocess text for analysis
+    Preprocess text for analysis: lowercase, tokenization, stopword removal, and stemming
     """
     if not text:
         return ""
@@ -63,9 +72,11 @@ def preprocess_text(text):
     # Tokenize
     tokens = word_tokenize(text)
     
-    # Remove stopwords and lemmatize
-    tokens = [lemmatizer.lemmatize(token) for token in tokens 
-              if token.isalnum() and token not in stop_words]
+    # Remove stopwords and stem
+    # We use stemming instead of lemmatization because it's better at matching word variations
+    # (e.g., 'discovery' and 'discovered' both become 'discov')
+    tokens = [stemmer.stem(token) for token in tokens 
+              if token.isalnum() and token not in stop_words and len(token) > 1]
     
     return ' '.join(tokens)
 
@@ -94,23 +105,40 @@ def compute_similarity(text1, text2):
         if not text1 or not text2:
             return 0.0
         
+        # Preprocess both texts
+        t1 = preprocess_text(text1)
+        t2 = preprocess_text(text2)
+        
+        # If either is empty after preprocessing, similarity is 0 unless they were both empty
+        if not t1 or not t2:
+            # Fallback to raw comparison if preprocessing stripped everything (e.g. "What is?")
+            if text1.strip().lower() == text2.strip().lower():
+                return 1.0
+            return 0.0
+        
         vectorizer = TfidfVectorizer()
-        vectors = vectorizer.fit_transform([text1, text2])
+        vectors = vectorizer.fit_transform([t1, t2])
         similarity = cosine_similarity(vectors[0:1], vectors[1:2])[0][0]
         return float(similarity)
     except Exception as e:
         logger.error(f"Error computing similarity: {str(e)}")
         return 0.0
 
-def find_similar_questions(question, questions_list, threshold=0.7, max_results=10):
+def find_similar_questions(question, questions_list, threshold=0.3, max_results=10):
     """
     Find similar questions from a list
     """
     try:
         similarities = []
         
+        q_processed = preprocess_text(question)
+        if not q_processed:
+            q_processed = question.lower().strip()
+
         for q in questions_list:
-            sim = compute_similarity(question, q.get('questionText', ''))
+            q_text = q.get('questionText', '')
+            sim = compute_similarity(question, q_text)
+            
             if sim >= threshold:
                 similarities.append({
                     'question': q,

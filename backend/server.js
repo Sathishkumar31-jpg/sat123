@@ -97,8 +97,22 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`✅ Server running on port ${PORT}`);
+    console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`   API: http://localhost:${PORT}/api`);
+});
+
+// ── Graceful error handling ────────────────────────────────────────────────
+server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`\n❌ Port ${PORT} is already in use.`);
+        console.error(`   Run: npx kill-port ${PORT}  (or restart the terminal)`);
+        console.error(`   Or run: npm run dev  (it auto-kills the port now)\n`);
+        process.exit(1);
+    } else {
+        console.error('Server error:', err);
+        process.exit(1);
+    }
 });
 
 // Graceful shutdown

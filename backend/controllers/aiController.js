@@ -43,7 +43,7 @@ const analyzeQuestion = async (req, res) => {
 
 const findSimilarQuestions = async (req, res) => {
     try {
-        const { question, threshold = 0.1, maxResults = 10 } = req.body;
+        const { question, threshold = 0.3, maxResults = 10 } = req.body;
 
         if (!question) {
             return res.status(400).json({
@@ -73,13 +73,23 @@ const findSimilarQuestions = async (req, res) => {
             console.warn('AI Service unreachable, using Demo Mode fallback...');
             
             // DEMO MODE FALLBACK: Simple keyword similarity
-            // Improved to catch short technical terms (TCP, UDP, OS, etc.)
-            const queryWords = question.toLowerCase().split(/\s+/).filter(w => w.length >= 2);
+            // Improved to exclude common stop words and handle word variations
+            const stopwords = ['what', 'is', 'the', 'of', 'in', 'and', 'to', 'for', 'a', 'an', 'which', 'who', 'how', 'why', 'whose', 'whom', 'where', 'when', 'are'];
+            const queryWords = question.toLowerCase()
+                .split(/\s+/)
+                .filter(w => w.length >= 2 && !stopwords.includes(w));
             
             const results = existingQuestions.map(q => {
-                const qWords = q.questionText.toLowerCase().split(/\s+/);
-                const commonWords = queryWords.filter(w => qWords.some(qw => qw.includes(w) || w.includes(qw)));
-                const similarity = commonWords.length / Math.max(queryWords.length, 1);
+                const qText = q.questionText.toLowerCase();
+                const qWords = qText.split(/\s+/);
+                
+                // Check for keyword matches
+                const matches = queryWords.filter(w => {
+                    // Match whole word or significant part
+                    return qWords.some(qw => qw === w || (qw.length > 3 && qw.includes(w)) || (w.length > 3 && w.includes(qw)));
+                });
+                
+                const similarity = queryWords.length > 0 ? (matches.length / queryWords.length) : 0;
                 
                 return {
                     ...q,

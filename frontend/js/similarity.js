@@ -42,7 +42,7 @@ async function findSimilarQuestions(e) {
             headers,
             body: JSON.stringify({
                 question: searchQuery,
-                threshold: 0.1,
+                threshold: 0.3,
                 maxResults: 10
             })
         });
@@ -53,7 +53,7 @@ async function findSimilarQuestions(e) {
         if (data && data.success && data.data) {
             // Support both data.data.results and data.results
             const rawResults = data.data.results || data.results || [];
-            const results = rawResults.filter(r => r.similarity >= 0.1);
+            const results = rawResults.filter(r => r.similarity >= 0.3);
 
             if (results.length > 0) {
                 // Check for near-exact duplicate

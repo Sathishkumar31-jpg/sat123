@@ -33,7 +33,7 @@
     {
         "questionText": "Who discovered gravity?",
         "subject": "Physics",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -64,7 +64,7 @@
     {
         "questionText": "What is the speed of light in vacuum?",
         "subject": "Physics",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -126,7 +126,7 @@
     {
         "questionText": "What is the SI unit of Power?",
         "subject": "Physics",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -157,7 +157,7 @@
     {
         "questionText": "Which mirror is used in vehicles?",
         "subject": "Physics",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -219,7 +219,7 @@
     {
         "questionText": "Which instrument measures temperature?",
         "subject": "Physics",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -250,7 +250,7 @@
     {
         "questionText": "What causes a rainbow?",
         "subject": "Physics",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Understand",
         "options": [
             {
@@ -312,7 +312,7 @@
     {
         "questionText": "What is 12 × 8?",
         "subject": "Mathematics",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Apply",
         "options": [
             {
@@ -343,7 +343,7 @@
     {
         "questionText": "What is the square root of 64?",
         "subject": "Mathematics",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -405,7 +405,7 @@
     {
         "questionText": "What is the approximate value of π?",
         "subject": "Mathematics",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -436,7 +436,7 @@
     {
         "questionText": "What is 15 + 27?",
         "subject": "Mathematics",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Apply",
         "options": [
             {
@@ -498,7 +498,7 @@
     {
         "questionText": "What is 9²?",
         "subject": "Mathematics",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Apply",
         "options": [
             {
@@ -529,7 +529,7 @@
     {
         "questionText": "What is the perimeter of a square with side 5 cm?",
         "subject": "Mathematics",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Apply",
         "options": [
             {
@@ -591,7 +591,7 @@
     {
         "questionText": "Which number is a prime number?",
         "subject": "Mathematics",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Understand",
         "options": [
             {
@@ -622,7 +622,7 @@
     {
         "questionText": "What is the chemical formula of water?",
         "subject": "Chemistry",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -684,7 +684,7 @@
     {
         "questionText": "Which gas is essential for respiration?",
         "subject": "Chemistry",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -715,7 +715,7 @@
     {
         "questionText": "What is the pH value of pure water?",
         "subject": "Chemistry",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -777,7 +777,7 @@
     {
         "questionText": "NaCl is commonly known as?",
         "subject": "Chemistry",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -808,7 +808,7 @@
     {
         "questionText": "Which gas is commonly used in balloons?",
         "subject": "Chemistry",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -870,7 +870,7 @@
     {
         "questionText": "Which acid is present in lemons?",
         "subject": "Chemistry",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -901,7 +901,7 @@
     {
         "questionText": "What is the atomic number of Carbon?",
         "subject": "Chemistry",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -963,7 +963,7 @@
     {
         "questionText": "Which data structure follows FIFO?",
         "subject": "Computer Science",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Understand",
         "options": [
             {
@@ -994,7 +994,7 @@
     {
         "questionText": "What does RAM stand for?",
         "subject": "Computer Science",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1056,7 +1056,7 @@
     {
         "questionText": "What does URL stand for?",
         "subject": "Computer Science",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1087,7 +1087,7 @@
     {
         "questionText": "Which company developed Windows?",
         "subject": "Computer Science",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1149,7 +1149,7 @@
     {
         "questionText": "Which number system do computers use?",
         "subject": "Computer Science",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1180,7 +1180,7 @@
     {
         "questionText": "What does AI stand for?",
         "subject": "Computer Science",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1242,7 +1242,7 @@
     {
         "questionText": "Which organ pumps blood throughout the body?",
         "subject": "Biology",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1273,7 +1273,7 @@
     {
         "questionText": "What is the basic unit of life?",
         "subject": "Biology",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1335,7 +1335,7 @@
     {
         "questionText": "What is the largest organ in the human body?",
         "subject": "Biology",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1366,7 +1366,7 @@
     {
         "questionText": "Which vitamin is produced when the skin is exposed to sunlight?",
         "subject": "Biology",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1428,7 +1428,7 @@
     {
         "questionText": "Which blood cells help fight infections?",
         "subject": "Biology",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1459,7 +1459,7 @@
     {
         "questionText": "Which gas do plants absorb during photosynthesis?",
         "subject": "Biology",
-        "difficulty": "Easy",
+        "difficulty": "Hard",
         "bloomLevel": "Remember",
         "options": [
             {
@@ -1521,7 +1521,7 @@
     {
         "questionText": "Which part of the plant absorbs water and minerals from the soil?",
         "subject": "Biology",
-        "difficulty": "Easy",
+        "difficulty": "Medium",
         "bloomLevel": "Remember",
         "options": [
             {
