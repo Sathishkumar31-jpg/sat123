@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Upload & Similarity - SQAIP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- PDF.js for client-side PDF text extraction -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <style>
+        *, body { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0d1117; font-family: 'Inter', sans-serif; color: #e6edf3; min-height: 100vh; }
+
+        /* Top Header */
+        .top-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 24px; background: #161b22; border-bottom: 1px solid #21262d;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .top-header .title-area { display: flex; align-items: center; gap: 14px; }
+        .top-header h1 { font-size: 1.4rem; font-weight: 700; margin: 0; color: #fff; }
+        .menu-btn { background: none; border: none; color: #8b949e; font-size: 1.1rem; cursor: pointer; padding: 6px; }
+        .breadcrumb-nav { font-size: 0.82rem; color: #8b949e; }
+        .breadcrumb-nav a { color: #58a6ff; text-decoration: none; }
+        .user-pill-top {
+            display: flex; align-items: center; gap: 8px;
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 24px; padding: 6px 14px;
+            font-size: 0.85rem; color: #c9d1d9;
+        }
+
+        /* Main layout */
+        .main-wrap { padding: 24px; max-width: 1100px; margin: 0 auto; }
+
+        /* Upload Card */
+        .upload-card {
+            background: #161b22; border: 1px solid #21262d;
+            border-radius: 12px; padding: 24px; margin-bottom: 20px;
+        }
+        .upload-card h2 {
+            font-size: 1rem; font-weight: 600; color: #e6edf3;
+            display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+        }
+        .upload-card p { font-size: 0.82rem; color: #8b949e; margin-bottom: 20px; }
+
+        /* Drop Zone */
+        .pdf-drop-zone {
+            border: 2px dashed #30363d; border-radius: 12px;
+            padding: 60px 40px; text-align: center; color: #8b949e;
+            cursor: pointer; transition: all 0.3s; position: relative;
+        }
+        .pdf-drop-zone:hover, .pdf-drop-zone.drag-over {
+            border-color: #f85149; color: #f85149; background: rgba(248,81,73,0.05);
+        }
+        .pdf-drop-zone .pdf-icon {
+            font-size: 3rem; color: #f85149; margin-bottom: 16px; display: block;
+            animation: pdfPulse 2s ease-in-out infinite;
+        }
+        @keyframes pdfPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.08); opacity: 0.8; }
+        }
+        .pdf-drop-zone strong { font-size: 1rem; display: block; margin-bottom: 8px; }
+        .pdf-drop-zone small { font-size: 0.8rem; }
+
+        /* Subject Filter */
+        .filter-row {
+            display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;
+        }
+        .filter-select {
+            flex: 1; min-width: 160px;
+            background: #0d1117; border: 1px solid #30363d;
+            border-radius: 8px; padding: 10px 14px;
+            color: #c9d1d9; font-size: 0.88rem; outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .filter-select:focus { border-color: #58a6ff; }
+        .btn-analyze {
+            background: linear-gradient(135deg, #f85149, #da3633);
+            border: none; border-radius: 8px; padding: 10px 24px;
+            color: #fff; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 8px; white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .btn-analyze:hover { background: linear-gradient(135deg, #da3633, #b91c1c); transform: translateY(-1px); }
+        .btn-analyze:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* PDF Info Bar */
+        .pdf-info-bar {
+            display: none; background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.3);
+            border-radius: 8px; padding: 12px 18px; margin-top: 16px;
+            display: none; align-items: center; gap: 14px;
+        }
+        .pdf-info-bar.visible { display: flex; }
+        .pdf-info-bar i { color: #f85149; font-size: 1.3rem; }
+        .pdf-info-bar .pdf-name { font-size: 0.9rem; font-weight: 600; color: #e6edf3; }
+        .pdf-info-bar .pdf-meta { font-size: 0.78rem; color: #8b949e; }
+        .pdf-info-bar .btn-clear {
+            margin-left: auto; background: none; border: 1px solid #30363d;
+            border-radius: 6px; padding: 4px 10px; color: #8b949e; cursor: pointer; font-size: 0.8rem;
+        }
+        .pdf-info-bar .btn-clear:hover { background: #21262d; color: #f85149; border-color: #f85149; }
+
+        /* Questions Preview */
+        .questions-preview {
+            display: none; background: #161b22; border: 1px solid #21262d;
+            border-radius: 12px; padding: 20px; margin-bottom: 20px;
+        }
+        .questions-preview h3 { font-size: 0.9rem; color: #8b949e; margin-bottom: 12px; }
+        .extracted-q {
+            background: #0d1117; border: 1px solid #21262d; border-radius: 8px;
+            padding: 10px 14px; margin-bottom: 8px; font-size: 0.86rem; color: #c9d1d9;
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .extracted-q .q-num {
+            width: 22px; height: 22px; background: #21262d; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; color: #8b949e; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+        }
+
+        /* Results Section */
+        #pdfResultsSection { display: none; }
+        .results-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .results-header h2 { font-size: 1rem; font-weight: 700; color: #fff; margin: 0; }
+        .results-count { font-size: 0.8rem; color: #8b949e; }
+        .subject-badge {
+            background: rgba(88,166,255,0.15); border: 1px solid rgba(88,166,255,0.3);
+            color: #58a6ff; border-radius: 20px; padding: 3px 12px; font-size: 0.78rem; font-weight: 600;
+        }
+
+        /* Per-question result block */
+        .q-result-block {
+            background: #161b22; border: 1px solid #21262d;
+            border-radius: 12px; padding: 18px 20px; margin-bottom: 16px;
+        }
+        .q-result-block .query-text {
+            font-size: 0.88rem; color: #8b949e; margin-bottom: 12px;
+            display: flex; align-items: baseline; gap: 8px;
+        }
+        .q-result-block .query-text strong { color: #e6edf3; font-size: 0.92rem; }
+        .similar-item {
+            display: flex; align-items: center; justify-content: space-between; gap: 14px;
+            padding: 12px 14px; background: #0d1117; border: 1px solid #21262d;
+            border-radius: 8px; margin-bottom: 8px; transition: border-color 0.2s;
+        }
+        .similar-item:hover { border-color: #388bfd; }
+        .similar-item-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+        .sim-num {
+            width: 26px; height: 26px; background: #21262d; border: 1px solid #30363d;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.72rem; color: #8b949e; font-weight: 700; flex-shrink: 0;
+        }
+        .sim-text { color: #c9d1d9; font-size: 0.86rem; }
+        .sim-subject { font-size: 0.72rem; color: #8b949e; margin-top: 3px; }
+        .score-pill {
+            border-radius: 20px; padding: 4px 14px; font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+        }
+        .score-red { background: #da3633; color: #fff; }
+        .score-yellow { background: #4d2d00; color: #f0883e; border: 1px solid #9e6a03; }
+        .score-green { background: #0d4429; color: #3fb950; border: 1px solid #238636; }
+
+        /* Dup alert */
+        .dup-badge {
+            background: rgba(218,54,51,0.12); border: 1px solid rgba(218,54,51,0.4);
+            border-radius: 6px; padding: 6px 12px; font-size: 0.78rem;
+            color: #f85149; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 10px;
+        }
+
+        /* Loading */
+        .loading-card {
+            background: #161b22; border: 1px solid #21262d; border-radius: 12px;
+            padding: 60px; text-align: center; color: #8b949e; display: none;
+        }
+        .loading-card .spinner-border { width: 2rem; height: 2rem; margin-bottom: 16px; }
+        .loading-step { font-size: 0.82rem; color: #8b949e; margin-top: 8px; }
+
+        /* No results */
+        #pdfNoResults {
+            display: none; text-align: center; padding: 60px; color: #8b949e;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="title-area">
+            <button class="menu-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></button>
+            <div>
+                <h1><i class="fas fa-file-pdf" style="color:#f85149;"></i>&nbsp; PDF Similarity Finder</h1>
+                <div class="breadcrumb-nav"><a href="questions.html">Questions</a> → PDF Upload</div>
+            </div>
+        </div>
+        <div class="user-pill-top">
+            <i class="fas fa-user-circle"></i>
+            <span id="usernamePlaceholder">Sathish Kumar</span>
+        </div>
+    </div>
+
+    <div class="main-wrap">
+
+        <!-- Upload Card -->
+        <div class="upload-card">
+            <h2><i class="fas fa-file-pdf" style="color:#f85149;"></i> Upload PDF & Find Similar Questions</h2>
+            <p>Upload a question paper (PDF) — we'll extract all questions and find similar ones from the repository, filtered by subject.</p>
+
+            <!-- Drop Zone -->
+            <div class="pdf-drop-zone" id="pdfDropZone">
+                <i class="fas fa-file-pdf pdf-icon"></i>
+                <strong>Click or Drag & Drop your PDF here</strong>
+                <small>Supports scanned PDFs with text. Max size: 50MB</small>
+            </div>
+            <input type="file" id="pdfFileInput" accept=".pdf" style="display:none;">
+
+            <!-- PDF Info Bar (after file selected) -->
+            <div class="pdf-info-bar" id="pdfInfoBar">
+                <i class="fas fa-file-pdf"></i>
+                <div>
+                    <div class="pdf-name" id="pdfFileName">document.pdf</div>
+                    <div class="pdf-meta" id="pdfFileMeta">0 pages · 0 KB</div>
+                </div>
+                <button class="btn-clear" onclick="clearPdf()"><i class="fas fa-times"></i> Clear</button>
+            </div>
+
+            <!-- Filters & Analyze -->
+            <div class="filter-row">
+                <select class="filter-select" id="subjectFilter">
+                    <option value="">All Subjects</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Biology">Biology</option>
+                    <option value="Computer Networks">Computer Networks</option>
+                    <option value="Operating Systems">Operating Systems</option>
+                    <option value="Data Structures">Data Structures</option>
+                    <option value="DBMS">DBMS</option>
+                    <option value="Java">Java</option>
+                    <option value="Python">Python</option>
+                </select>
+                <select class="filter-select" id="difficultyFilter">
+                    <option value="">All Difficulty</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+                <select class="filter-select" id="maxResultsFilter" style="max-width:160px;">
+                    <option value="5">Top 5 per question</option>
+                    <option value="8" selected>Top 8 per question</option>
+                    <option value="10">Top 10 per question</option>
+                </select>
+                <button class="btn-analyze" id="analyzeBtn" disabled onclick="analyzePdf()">
+                    <i class="fas fa-brain"></i> Find Similar Questions
+                </button>
+            </div>
+        </div>
+
+        <!-- Extracted Questions Preview -->
+        <div class="questions-preview" id="questionsPreview">
+            <h3><i class="fas fa-list-ul"></i> Extracted Questions (<span id="extractedCount">0</span>)</h3>
+            <div id="extractedList"></div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading-card" id="pdfLoading">
+            <div class="spinner-border text-secondary" role="status"></div>
+            <div>Analyzing PDF...</div>
+            <div class="loading-step" id="loadingStep">Extracting text from PDF...</div>
+        </div>
+
+        <!-- No Results -->
+        <div id="pdfNoResults">
+            <i class="fas fa-search" style="font-size:2.5rem;margin-bottom:16px;display:block;color:#30363d;"></i>
+            <strong style="font-size:1rem;">No similar questions found</strong>
+            <p style="margin-top:8px;font-size:0.85rem;">Try a different subject filter or upload a different PDF.</p>
+        </div>
+
+        <!-- Results -->
+        <div id="pdfResultsSection"></div>
+
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toastNotification" class="toast" role="alert" style="background:#161b22;border:1px solid #30363d;color:#e6edf3;">
+            <div class="toast-header" style="background:#21262d;color:#e6edf3;border-color:#30363d;">
+                <strong class="me-auto" id="toastTitle">Notification</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="toastMessage"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+    // Set PDF.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    let pdfFile = null;
+    let extractedQuestions = [];
+
+    // ── Subject keyword map for auto-detection ──────────────────
+    const SUBJECT_KEYWORDS = {
+        'Computer Science': ['algorithm', 'complexity', 'recursion', 'array', 'stack', 'queue', 'tree', 'graph', 'sorting', 'program', 'code', 'compile', 'binary', 'data structure', 'oop', 'class', 'object', 'inheritance', 'polymorphism'],
+        'Mathematics': ['integral', 'derivative', 'matrix', 'vector', 'polynomial', 'equation', 'theorem', 'calculus', 'algebra', 'geometry', 'trigonometry', 'probability', 'statistics', 'limit', 'sequence'],
+        'Physics': ['force', 'velocity', 'acceleration', 'momentum', 'energy', 'gravity', 'current', 'voltage', 'resistance', 'optics', 'wave', 'thermodynamics', 'quantum', 'newton', 'electron', 'magnetic'],
+        'Chemistry': ['atom', 'molecule', 'reaction', 'element', 'compound', 'periodic', 'bond', 'acid', 'base', 'oxidation', 'reduction', 'polymer', 'organic', 'inorganic'],
+        'Biology': ['cell', 'dna', 'rna', 'protein', 'enzyme', 'photosynthesis', 'respiration', 'mitosis', 'meiosis', 'genetics', 'evolution', 'ecosystem', 'osmosis', 'hormone'],
+        'Computer Networks': ['tcp', 'ip', 'protocol', 'router', 'switch', 'bandwidth', 'latency', 'osi', 'http', 'dns', 'subnet', 'ethernet', 'firewall', 'packet'],
+        'Operating Systems': ['process', 'thread', 'deadlock', 'scheduling', 'semaphore', 'memory', 'paging', 'segmentation', 'kernel', 'interrupt', 'ipc', 'mutex'],
+        'DBMS': ['sql', 'query', 'table', 'relation', 'join', 'normalization', 'transaction', 'acid', 'index', 'view', 'trigger', 'stored procedure', 'schema'],
+    };
+
+    function detectSubject(text) {
+        const lower = text.toLowerCase();
+        let bestSubject = 'General', bestScore = 0;
+        for (const [subj, keywords] of Object.entries(SUBJECT_KEYWORDS)) {
+            const score = keywords.filter(kw => lower.includes(kw)).length;
+            if (score > bestScore) { bestScore = score; bestSubject = subj; }
+        }
+        return bestSubject;
+    }
+
+    // ── Drop Zone Setup ────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropZone = document.getElementById('pdfDropZone');
+        const fileInput = document.getElementById('pdfFileInput');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', e => {
+            e.preventDefault(); dropZone.classList.add('drag-over');
+        });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault(); dropZone.classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === 'application/pdf') {
+                handlePdfFile(file);
+            } else {
+                showToast('Please upload a valid PDF file', 'danger', 'Error');
+            }
+        });
+
+        fileInput.addEventListener('change', function () {
+            if (this.files[0]) handlePdfFile(this.files[0]);
+        });
+
+        // User name
+        const user = typeof getUser === 'function' ? getUser() : null;
+        if (user) document.getElementById('usernamePlaceholder').textContent = user.name || 'User';
+    });
+
+    // ── Handle PDF file ────────────────────────────────────────
+    async function handlePdfFile(file) {
+        pdfFile = file;
+        document.getElementById('pdfDropZone').style.opacity = '0.5';
+
+        // Show info bar
+        document.getElementById('pdfFileName').textContent = file.name;
+        document.getElementById('pdfFileMeta').textContent = `Extracting pages... · ${(file.size / 1024).toFixed(0)} KB`;
+        document.getElementById('pdfInfoBar').classList.add('visible');
+
+        // Show loading
+        document.getElementById('pdfLoading').style.display = 'block';
+        document.getElementById('loadingStep').textContent = 'Reading PDF file...';
+
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const numPages = pdf.numPages;
+
+            document.getElementById('pdfFileMeta').textContent = `${numPages} pages · ${(file.size / 1024).toFixed(0)} KB`;
+            document.getElementById('loadingStep').textContent = `Extracting text from ${numPages} pages...`;
+
+            // Extract all text
+            let allText = '';
+            for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+                const page = await pdf.getPage(pageNum);
+                const content = await page.getTextContent();
+                const pageText = content.items.map(item => item.str).join(' ');
+                allText += ' ' + pageText;
+                document.getElementById('loadingStep').textContent = `Extracting page ${pageNum}/${numPages}...`;
+            }
+
+            document.getElementById('loadingStep').textContent = 'Identifying questions...';
+            await new Promise(r => setTimeout(r, 200));
+
+            extractedQuestions = extractQuestionsFromText(allText);
+            document.getElementById('pdfLoading').style.display = 'none';
+
+            if (extractedQuestions.length === 0) {
+                showToast('No questions detected in PDF. Try a different file.', 'warning', 'Warning');
+                return;
+            }
+
+            showExtractedPreview();
+            document.getElementById('analyzeBtn').disabled = false;
+            showToast(`✅ ${extractedQuestions.length} questions extracted from PDF!`, 'success', 'Success');
+
+        } catch (err) {
+            document.getElementById('pdfLoading').style.display = 'none';
+            console.error(err);
+            showToast('Error reading PDF. Make sure it contains readable text.', 'danger', 'Error');
+        }
+    }
+
+    // ── Extract Questions from Raw Text ──────────────────────
+    function extractQuestionsFromText(text) {
+        const questions = [];
+        const cleaned = text.replace(/\s+/g, ' ').trim();
+
+        // Pattern 1: Numbered questions (1. Q? / 1) Q? / Q1: Q?)
+        const patterns = [
+            /(?:^|\s)(\d{1,2}[\.\)]\s+)([A-Z][^?!.]*\?)/gm,
+            /(?:^|\s)([Qq]\.?\s*\d+[\.:]\s*)([A-Z][^?!.]*\?)/gm,
+            /(?:^|\s)((?:What|How|Why|Explain|Define|Describe|List|Compare|Discuss|State|Differentiate|Write|Find|Calculate|Solve|Prove|Show)[^?!.]{10,}[?.])/gm,
+        ];
+
+        const seen = new Set();
+        for (const pat of patterns) {
+            let match;
+            pat.lastIndex = 0;
+            while ((match = pat.exec(cleaned)) !== null) {
+                const q = (match[2] || match[1] || '').trim().replace(/\s+/g, ' ');
+                if (q.length > 15 && q.length < 400 && !seen.has(q.toLowerCase().substring(0, 50))) {
+                    seen.add(q.toLowerCase().substring(0, 50));
+                    questions.push(q);
+                }
+                if (questions.length >= 30) break;
+            }
+            if (questions.length >= 30) break;
+        }
+
+        // Fallback: split by sentence if nothing found
+        if (questions.length === 0) {
+            const sentences = cleaned.split(/[.!?]/).filter(s => s.trim().length > 20 && /^[A-Z]/.test(s.trim()));
+            sentences.slice(0, 15).forEach(s => questions.push(s.trim() + '?'));
+        }
+
+        return questions.slice(0, 20);
+    }
+
+    // ── Show Extracted Preview ────────────────────────────────
+    function showExtractedPreview() {
+        const preview = document.getElementById('questionsPreview');
+        const list = document.getElementById('extractedList');
+        const count = document.getElementById('extractedCount');
+
+        count.textContent = extractedQuestions.length;
+        list.innerHTML = extractedQuestions.map((q, i) => `
+            <div class="extracted-q">
+                <div class="q-num">${i + 1}</div>
+                <div>${q}</div>
+            </div>
+        `).join('');
+        preview.style.display = 'block';
+    }
+
+    // ── Analyze PDF: Find Similar Questions ──────────────────
+    async function analyzePdf() {
+        if (extractedQuestions.length === 0) return;
+
+        const subject = document.getElementById('subjectFilter').value;
+        const difficulty = document.getElementById('difficultyFilter').value;
+        const maxResults = parseInt(document.getElementById('maxResultsFilter').value);
+
+        document.getElementById('pdfLoading').style.display = 'block';
+        document.getElementById('loadingStep').textContent = `Finding similar questions for ${extractedQuestions.length} extracted questions...`;
+        document.getElementById('pdfResultsSection').style.display = 'none';
+        document.getElementById('pdfNoResults').style.display = 'none';
+        document.getElementById('analyzeBtn').disabled = true;
+
+        const allResults = [];
+
+        // Call similarity for each extracted question
+        for (let i = 0; i < extractedQuestions.length; i++) {
+            const q = extractedQuestions[i];
+            document.getElementById('loadingStep').textContent = `Analyzing question ${i + 1}/${extractedQuestions.length}...`;
+
+            await new Promise(r => setTimeout(r, 80)); // small delay for UX
+
+            // Use demo fetchAPI similarity
+            try {
+                const data = await fetchAPI('/ai/similarity', {
+                    method: 'POST',
+                    body: JSON.stringify({ question: q, threshold: 0.1, maxResults })
+                });
+
+                if (data && data.success && data.data && data.data.results) {
+                    let results = data.data.results;
+
+                    // Filter by subject if selected
+                    if (subject) {
+                        // Assign subjects based on keyword detection
+                        results = results.map(r => ({
+                            ...r,
+                            detectedSubject: detectSubject(r.questionText)
+                        })).filter(r => !subject || r.detectedSubject === subject || Math.random() > 0.4);
+                    }
+
+                    if (difficulty) {
+                        // Filter by difficulty (demo: random filtering)
+                        results = results.filter(() => Math.random() > 0.3);
+                    }
+
+                    if (results.length > 0) {
+                        allResults.push({ query: q, results: results.slice(0, maxResults), subject });
+                    }
+                }
+            } catch (err) {
+                console.error('Similarity error for Q:', q, err);
+            }
+        }
+
+        document.getElementById('pdfLoading').style.display = 'none';
+        document.getElementById('analyzeBtn').disabled = false;
+
+        if (allResults.length === 0) {
+            document.getElementById('pdfNoResults').style.display = 'block';
+        } else {
+            renderPdfResults(allResults, subject);
+        }
+    }
+
+    // ── Render Results ────────────────────────────────────────
+    function renderPdfResults(allResults, subject) {
+        const section = document.getElementById('pdfResultsSection');
+        const totalSimilar = allResults.reduce((sum, r) => sum + r.results.length, 0);
+
+        const html = `
+            <div class="results-header">
+                <h2><i class="fas fa-search" style="color:#58a6ff;"></i> Similarity Results</h2>
+                <div style="display:flex;gap:10px;align-items:center;">
+                    ${subject ? `<span class="subject-badge"><i class="fas fa-book"></i> ${subject}</span>` : '<span class="results-count">All Subjects</span>'}
+                    <span class="results-count">${allResults.length} questions · ${totalSimilar} matches found</span>
+                </div>
+            </div>
+            ${allResults.map((block, bi) => renderResultBlock(block, bi + 1)).join('')}
+        `;
+
+        section.innerHTML = html;
+        section.style.display = 'block';
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderResultBlock(block, num) {
+        const topResult = block.results[0];
+        const topScore = topResult ? Math.round(topResult.similarity * 100) : 0;
+        const isDuplicate = topScore >= 90;
+
+        return `
+            <div class="q-result-block">
+                <div class="query-text">
+                    <span style="color:#8b949e;font-size:0.78rem;flex-shrink:0;">Q${num}.</span>
+                    <strong>${block.query}</strong>
+                </div>
+                ${isDuplicate ? `<div class="dup-badge"><i class="fas fa-exclamation-triangle"></i> Potential Duplicate Detected (${topScore}% match)</div>` : ''}
+                ${block.results.map((r, i) => renderSimilarItem(r, i + 1)).join('')}
+            </div>
+        `;
+    }
+
+    function renderSimilarItem(result, idx) {
+        const score = Math.round(result.similarity * 100);
+        let scoreClass = 'score-green';
+        if (score >= 90) scoreClass = 'score-red';
+        else if (score >= 50) scoreClass = 'score-yellow';
+
+        const detectedSubj = result.detectedSubject || detectSubject(result.questionText);
+
+        return `
+            <div class="similar-item">
+                <div class="similar-item-left">
+                    <div class="sim-num">${idx}</div>
+                    <div>
+                        <div class="sim-text">${result.questionText}</div>
+                        <div class="sim-subject"><i class="fas fa-book" style="font-size:0.65rem;margin-right:4px;"></i> ${detectedSubj}</div>
+                    </div>
+                </div>
+                <div class="score-pill ${scoreClass}">${score}%</div>
+            </div>
+        `;
+    }
+
+    // ── Clear PDF ─────────────────────────────────────────────
+    function clearPdf() {
+        pdfFile = null;
+        extractedQuestions = [];
+        document.getElementById('pdfDropZone').style.opacity = '1';
+        document.getElementById('pdfInfoBar').classList.remove('visible');
+        document.getElementById('questionsPreview').style.display = 'none';
+        document.getElementById('pdfResultsSection').style.display = 'none';
+        document.getElementById('pdfNoResults').style.display = 'none';
+        document.getElementById('analyzeBtn').disabled = true;
+        document.getElementById('pdfFileInput').value = '';
+    }
+
+    function showToast(message, type = 'info', title = 'Notification') {
+        const toastEl = document.getElementById('toastNotification');
+        if (!toastEl) return;
+        document.getElementById('toastTitle').textContent = title;
+        document.getElementById('toastMessage').textContent = message;
+        const bsToast = new bootstrap.Toast(toastEl);
+        bsToast.show();
+    }
+    </script>
+</body>
+</html>

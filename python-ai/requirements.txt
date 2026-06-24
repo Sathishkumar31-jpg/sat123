@@ -1,0 +1,32 @@
+# ===================================
+# REQUIREMENTS.TXT - Python Dependencies
+# ===================================
+
+# Flask Framework
+Flask==2.3.2
+Flask-CORS==4.0.0
+
+# NLP and ML Libraries
+nltk==3.8.1
+scikit-learn==1.3.0
+numpy==1.24.3
+
+# Data Processing
+pandas==2.0.3
+
+# Embeddings and Advanced NLP
+gensim==4.3.1
+
+# Environment
+python-dotenv==1.0.0
+
+# Server
+gunicorn==21.2.0
+
+# Utilities
+requests==2.31.0
+
+# Development
+pytest==7.4.0
+black==23.7.0
+flake8==6.0.0

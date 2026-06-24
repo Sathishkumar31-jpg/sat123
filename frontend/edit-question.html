@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Question - SQAIP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dark-mode">
+    <div class="stars"></div>
+
+    <div class="layout-wrapper">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar glassmorphic">
+            <div class="sidebar-header">
+                <a href="dashboard.html" class="brand">
+                    <i class="fas fa-brain"></i>
+                    <span>SQAIP</span>
+                </a>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav class="nav flex-column">
+                <a href="dashboard.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="questions.html" class="nav-link active">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Questions</span>
+                </a>
+                <a href="similarity.html" class="nav-link">
+                    <i class="fas fa-search"></i>
+                    <span>Similarity Finder</span>
+                </a>
+                <a href="autotag.html" class="nav-link">
+                    <i class="fas fa-tags"></i>
+                    <span>Auto Tagging</span>
+                </a>
+                <a href="graph.html" class="nav-link">
+                    <i class="fas fa-network-wired"></i>
+                    <span>Knowledge Graph</span>
+                </a>
+                <a href="analytics.html" class="nav-link">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Analytics</span>
+                </a>
+                <a href="profile.html" class="nav-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profile</span>
+                </a>
+                <hr class="my-3">
+                <a href="#" class="nav-link" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="theme-toggle">
+                    <button id="themeToggleSidebar" class="btn btn-sm btn-theme-toggle w-100">
+                        <i class="fas fa-moon"></i> Dark Mode
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="topbar glassmorphic">
+                <button class="btn btn-sm" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="topbar-search">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="topbar-actions">
+                    <button class="btn btn-icon">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <div class="user-menu">
+                        <button class="btn btn-icon dropdown-toggle" id="userMenuBtn">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" id="userDropdown">
+                            <a class="dropdown-item" href="profile.html">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cog"></i> Settings
+                            </a>
+                            <hr class="dropdown-divider">
+                            <a class="dropdown-item" href="#" id="logoutLink">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Content -->
+            <div class="page-content p-4">
+                <!-- Page Header -->
+                <div class="page-header mb-5">
+                    <div>
+                        <h1 class="page-title">Edit Question</h1>
+                        <p class="page-subtitle">Modify the existing question</p>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <div class="glassmorphic p-4">
+                    <form id="editQuestionForm">
+                        <input type="hidden" id="questionId" name="questionId">
+
+                        <!-- Question Text -->
+                        <div class="mb-4">
+                            <label for="questionText" class="form-label">Question <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="questionText" name="questionText" 
+                                      placeholder="Enter the question..." rows="4" required></textarea>
+                            <div class="invalid-feedback d-block" id="questionTextError"></div>
+                        </div>
+
+                        <!-- Subject and Difficulty -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="subject" class="form-label">Subject <span class="text-danger">*</span></label>
+                                <select class="form-select" id="subject" name="subject" required>
+                                    <option value="">Select Subject</option>
+                                    <option>Mathematics</option>
+                                    <option>Physics</option>
+                                    <option>Chemistry</option>
+                                    <option>Biology</option>
+                                    <option>Computer Science</option>
+                                </select>
+                                <div class="invalid-feedback d-block" id="subjectError"></div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="difficulty" class="form-label">Difficulty <span class="text-danger">*</span></label>
+                                <select class="form-select" id="difficulty" name="difficulty" required>
+                                    <option value="">Select Difficulty</option>
+                                    <option>Easy</option>
+                                    <option>Medium</option>
+                                    <option>Hard</option>
+                                </select>
+                                <div class="invalid-feedback d-block" id="difficultyError"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tags and Options -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="tags" class="form-label">Tags</label>
+                                <input type="text" class="form-control" id="tags" name="tags" 
+                                       placeholder="Enter tags separated by comma">
+                                <div class="invalid-feedback d-block" id="tagsError"></div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="bloomLevel" class="form-label">Bloom Taxonomy Level</label>
+                                <select class="form-select" id="bloomLevel" name="bloomLevel">
+                                    <option value="">Select Level</option>
+                                    <option>Remember</option>
+                                    <option>Understand</option>
+                                    <option>Apply</option>
+                                    <option>Analyze</option>
+                                    <option>Evaluate</option>
+                                    <option>Create</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Options -->
+                        <div class="mb-4">
+                            <label class="form-label">Options <span class="text-danger">*</span></label>
+                            <div id="optionsContainer">
+                                <div class="option-item mb-3 glassmorphic p-3">
+                                    <div class="d-flex gap-2">
+                                        <span class="option-label">A.</span>
+                                        <input type="text" class="form-control option-input" placeholder="Option A" required>
+                                    </div>
+                                </div>
+                                <div class="option-item mb-3 glassmorphic p-3">
+                                    <div class="d-flex gap-2">
+                                        <span class="option-label">B.</span>
+                                        <input type="text" class="form-control option-input" placeholder="Option B" required>
+                                    </div>
+                                </div>
+                                <div class="option-item mb-3 glassmorphic p-3">
+                                    <div class="d-flex gap-2">
+                                        <span class="option-label">C.</span>
+                                        <input type="text" class="form-control option-input" placeholder="Option C" required>
+                                    </div>
+                                </div>
+                                <div class="option-item mb-3 glassmorphic p-3">
+                                    <div class="d-flex gap-2">
+                                        <span class="option-label">D.</span>
+                                        <input type="text" class="form-control option-input" placeholder="Option D" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary-glass mt-2" id="addOptionBtn">
+                                <i class="fas fa-plus"></i> Add Option
+                            </button>
+                        </div>
+
+                        <!-- Correct Answer -->
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label for="correctAnswer" class="form-label">Correct Answer <span class="text-danger">*</span></label>
+                                <select class="form-select" id="correctAnswer" name="correctAnswer" required>
+                                    <option value="">Select Correct Answer</option>
+                                    <option>A</option>
+                                    <option>B</option>
+                                    <option>C</option>
+                                    <option>D</option>
+                                </select>
+                                <div class="invalid-feedback d-block" id="correctAnswerError"></div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option value="draft">Draft</option>
+                                    <option value="published">Published</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Explanation -->
+                        <div class="mb-4">
+                            <label for="explanation" class="form-label">Explanation</label>
+                            <textarea class="form-control" id="explanation" name="explanation" 
+                                      placeholder="Enter explanation for the answer..." rows="4"></textarea>
+                        </div>
+
+                        <!-- AI Suggestions -->
+                        <div class="alert alert-info glassmorphic" id="aiSuggestions" style="display: none;">
+                            <h6 class="alert-heading">
+                                <i class="fas fa-brain"></i> AI Suggestions
+                            </h6>
+                            <div id="suggestionsList"></div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="d-flex gap-3 mt-5">
+                            <button type="submit" class="btn btn-primary-glass">
+                                <i class="fas fa-save"></i> Update Question
+                            </button>
+                            <button type="button" class="btn btn-secondary-glass" id="analyzeBtn">
+                                <i class="fas fa-brain"></i> Analyze with AI
+                            </button>
+                            <a href="questions.html" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toastNotification" class="toast" role="alert">
+            <div class="toast-header">
+                <strong class="me-auto" id="toastTitle">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="toastMessage">
+                Your message here
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay d-none">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/questions.js"></script>
+</body>
+</html>

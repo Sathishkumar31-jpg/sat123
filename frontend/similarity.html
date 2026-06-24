@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Similarity Finder - SQAIP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* -- EXACT SCREENSHOT MATCH -- */
+        *, body { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0d1117; font-family: 'Inter', sans-serif; color: #e6edf3; min-height: 100vh; }
+
+        /* Top header */
+        .top-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 24px;
+            background: #161b22;
+            border-bottom: 1px solid #21262d;
+        }
+        .top-header .title-area { display: flex; align-items: center; gap: 14px; }
+        .top-header h1 { font-size: 1.4rem; font-weight: 700; margin: 0; color: #fff; }
+        .menu-btn { background: none; border: none; color: #8b949e; font-size: 1.1rem; cursor: pointer; }
+        .user-pill-top {
+            display: flex; align-items: center; gap: 8px;
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 24px; padding: 6px 14px;
+            font-size: 0.85rem; color: #c9d1d9;
+        }
+
+        /* Main content */
+        .main-wrap { padding: 24px; max-width: 900px; margin: 0 auto; }
+
+        /* Search box card */
+        .search-card {
+            background: #161b22; border: 1px solid #21262d;
+            border-radius: 12px; padding: 24px;
+            margin-bottom: 20px;
+        }
+        .search-card h2 {
+            font-size: 1rem; font-weight: 600; color: #e6edf3;
+            display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+        }
+        .search-card p { font-size: 0.82rem; color: #8b949e; margin-bottom: 20px; }
+        
+        /* Input row */
+        .search-row {
+            display: flex; gap: 0; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;
+        }
+        .search-row input {
+            flex: 1; background: #0d1117; border: none; outline: none;
+            padding: 14px 18px; color: #e6edf3; font-size: 0.95rem; font-family: 'Inter', sans-serif;
+        }
+        .search-row input::placeholder { color: #484f58; }
+        .search-row button {
+            background: linear-gradient(135deg, #6e40c9, #8957e5);
+            border: none; padding: 14px 24px;
+            color: #fff; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; white-space: nowrap; font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+        }
+        .search-row button:hover { background: linear-gradient(135deg, #8957e5, #a371f7); }
+
+        /* Duplicate alert */
+        .dup-alert {
+            display: none;
+            background: rgba(218, 54, 51, 0.12);
+            border: 1px solid rgba(218, 54, 51, 0.5);
+            border-radius: 8px; padding: 14px 18px;
+            margin-top: 16px;
+            display: none; align-items: center; gap: 12px;
+        }
+        .dup-alert.visible { display: flex; }
+        .dup-alert i { color: #f85149; font-size: 1.1rem; }
+        .dup-alert strong { color: #f85149; font-size: 0.9rem; }
+        .dup-alert span { color: #8b949e; font-size: 0.82rem; display: block; }
+
+        /* Results section */
+        #resultsSection { display: none; }
+        #noResults { display: none; text-align: center; padding: 40px; color: #8b949e; }
+
+        /* Result item */
+        .result-item {
+            background: #161b22; border: 1px solid #21262d;
+            border-radius: 10px; padding: 18px 20px;
+            margin-bottom: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 16px; transition: border-color 0.2s;
+        }
+        .result-item:hover { border-color: #388bfd; }
+        .result-left { display: flex; align-items: center; gap: 16px; flex: 1; }
+        .result-num {
+            width: 30px; height: 30px;
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; color: #8b949e; font-weight: 600; flex-shrink: 0;
+        }
+        .result-text { color: #e6edf3; font-size: 0.9rem; }
+
+        /* Score pills */
+        .score-100 {
+            background: #da3633; color: #fff;
+            border-radius: 20px; padding: 4px 14px;
+            font-size: 0.82rem; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .score-green {
+            background: #0d4429; color: #3fb950;
+            border: 1px solid #238636;
+            border-radius: 20px; padding: 4px 14px;
+            font-size: 0.82rem; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .score-yellow {
+            background: #4d2d00; color: #f0883e;
+            border: 1px solid #9e6a03;
+            border-radius: 20px; padding: 4px 14px;
+            font-size: 0.82rem; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .loading-overlay-local { text-align: center; padding: 40px; color: #8b949e; }
+    </style>
+</head>
+<body>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="title-area">
+            <button class="menu-btn"><i class="fas fa-bars"></i></button>
+            <h1>Similarity Finder</h1>
+        </div>
+        <div class="user-pill-top">
+            <i class="fas fa-user-circle"></i>
+            <span id="usernamePlaceholder">sathishkumark843</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrap">
+        <!-- Search Card -->
+        <div class="search-card">
+            <h2><i class="fas fa-search"></i> Semantic Similarity Finder</h2>
+            <p>TF-IDF vector + cosine similarity returns the closest matches in the repository.</p>
+
+            <form id="similarityForm">
+                <div class="search-row">
+                    <input type="text" id="searchQuery" placeholder="Search questions..." required>
+                    <button type="submit">Find Similar</button>
+                </div>
+            </form>
+
+            <!-- Duplicate Alert -->
+            <div class="dup-alert" id="duplicateAlert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <strong>Potential Duplicate Found (100%)</strong>
+                    <span id="duplicateQuestionText"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="searchLoading" style="display:none;" class="loading-overlay-local">
+            <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+            <span style="margin-left:8px">Searching...</span>
+        </div>
+
+        <!-- No Results -->
+        <div id="noResults">
+            <i class="fas fa-search" style="font-size:2rem;margin-bottom:12px;display:block;"></i>
+            No similar questions found.
+        </div>
+
+        <!-- Results -->
+        <div id="resultsSection">
+            <div id="similarityResults"></div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toastNotification" class="toast" role="alert" style="background:#161b22;border:1px solid #30363d;color:#e6edf3;">
+            <div class="toast-header" style="background:#21262d;color:#e6edf3;border-color:#30363d;">
+                <strong class="me-auto" id="toastTitle">Notification</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="toastMessage"></div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="d-none" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;">
+        <div class="spinner-border text-light" role="status"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/similarity.js"></script>
+</body>
+</html>

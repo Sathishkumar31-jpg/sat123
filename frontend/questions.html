@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questions - SQAIP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- PDF.js & Tesseract.js for File Processing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <style>
+        /* ── EXACT SCREENSHOT MATCH ── */
+        body { background: #0d1117; font-family: 'Inter', sans-serif; color: #e6edf3; }
+        
+        /* Top bar */
+        .top-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 24px;
+            background: #161b22;
+            border-bottom: 1px solid #21262d;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .top-header .title-area { display: flex; align-items: center; gap: 14px; }
+        .top-header h1 { font-size: 1.4rem; font-weight: 700; margin: 0; color: #fff; }
+        .menu-btn { background: none; border: none; color: #8b949e; font-size: 1.1rem; cursor: pointer; padding: 6px; }
+        .user-pill-top {
+            display: flex; align-items: center; gap: 8px;
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 24px; padding: 6px 14px;
+            font-size: 0.85rem; color: #c9d1d9;
+        }
+
+        /* Search & filter bar */
+        .filter-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 16px 24px;
+            background: #0d1117;
+        }
+        .filter-search {
+            flex: 1; background: #161b22; border: 1px solid #30363d;
+            border-radius: 8px; padding: 9px 16px;
+            color: #c9d1d9; font-size: 0.9rem;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .filter-search input {
+            background: none; border: none; outline: none;
+            color: #c9d1d9; width: 100%; font-size: 0.9rem;
+        }
+        .filter-search i { color: #8b949e; }
+        .filter-select {
+            background: #161b22; border: 1px solid #30363d;
+            border-radius: 8px; padding: 9px 14px;
+            color: #c9d1d9; font-size: 0.85rem;
+            cursor: pointer; outline: none;
+        }
+        .filter-select:focus { border-color: #58a6ff; }
+        
+        /* Action buttons */
+        .action-bar {
+            display: flex; justify-content: flex-end; gap: 10px;
+            padding: 0 24px 16px;
+        }
+        .btn-csv {
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 8px; padding: 8px 18px;
+            color: #c9d1d9; font-size: 0.85rem; cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-csv:hover { background: #30363d; border-color: #58a6ff; color: #58a6ff; }
+        .btn-pdf {
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 8px; padding: 8px 18px;
+            color: #f85149; font-size: 0.85rem; cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-pdf:hover { background: #3d1616; border-color: #f85149; }
+        .btn-add {
+            background: linear-gradient(135deg, #6e40c9, #8957e5);
+            border: none; border-radius: 8px;
+            padding: 8px 18px; color: #fff;
+            font-size: 0.85rem; font-weight: 600;
+            cursor: pointer; display: flex; align-items: center; gap: 6px;
+        }
+        .btn-add:hover { background: linear-gradient(135deg, #8957e5, #a371f7); }
+        /* CSV Preview Table */
+        .csv-preview-table { width:100%; border-collapse: collapse; font-size: 0.8rem; }
+        .csv-preview-table th { background:#21262d; color:#8b949e; padding:8px 12px; text-align:left; font-weight:600; }
+        .csv-preview-table td { padding:8px 12px; border-bottom:1px solid #21262d; color:#c9d1d9; }
+        .csv-preview-table tr:hover td { background:#161b22; }
+        .csv-drop-zone {
+            border: 2px dashed #30363d; border-radius: 12px;
+            padding: 40px; text-align: center; color: #8b949e;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .csv-drop-zone:hover, .csv-drop-zone.drag-over { border-color: #58a6ff; color: #58a6ff; background: rgba(88,166,255,0.05); }
+
+        /* Table */
+        .table-wrap { padding: 0 24px; }
+        .q-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .q-table thead tr th {
+            color: #8b949e; font-weight: 600; font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            padding: 12px 16px; border-bottom: 1px solid #21262d;
+        }
+        .q-table tbody tr {
+            border-bottom: 1px solid #161b22;
+            transition: background 0.2s;
+        }
+        .q-table tbody tr:hover { background: #161b22; }
+        .q-table tbody td {
+            padding: 16px 16px; vertical-align: middle;
+        }
+        .q-text { color: #e6edf3; font-size: 0.9rem; font-weight: 400; max-width: 220px; }
+
+        /* Subject pill */
+        .subject-pill {
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 20px; padding: 4px 10px;
+            font-size: 0.75rem; color: #8b949e;
+            white-space: nowrap; display: inline-block; text-align: center;
+        }
+
+        /* Tag pill */
+        .tag-pill {
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 20px; padding: 3px 10px;
+            font-size: 0.75rem; color: #8b949e;
+            display: inline-block; margin: 2px 2px;
+        }
+
+        /* Difficulty badges - EXACT from screenshots */
+        .diff-easy {
+            background: #0d4429; color: #3fb950;
+            border: 1px solid #238636;
+            border-radius: 20px; padding: 4px 14px;
+            font-size: 0.8rem; font-weight: 600;
+            display: inline-block;
+        }
+        .diff-medium {
+            background: #4d2d00; color: #f0883e;
+            border: 1px solid #9e6a03;
+            border-radius: 20px; padding: 4px 12px;
+            font-size: 0.8rem; font-weight: 600;
+            display: inline-block;
+        }
+        .diff-hard {
+            background: #3d1616; color: #f85149;
+            border: 1px solid #da3633;
+            border-radius: 20px; padding: 4px 14px;
+            font-size: 0.8rem; font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Bloom pill */
+        .bloom-pill {
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 20px; padding: 4px 12px;
+            font-size: 0.78rem; color: #8b949e;
+            display: inline-block;
+        }
+
+        /* Action icon buttons */
+        .action-btns { display: flex; align-items: center; gap: 8px; }
+        .icon-btn {
+            width: 32px; height: 32px;
+            background: #21262d; border: 1px solid #30363d;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: #8b949e; font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .icon-btn:hover { background: #30363d; color: #f0f6fc; }
+        .icon-btn.del:hover { background: #3d1616; color: #f85149; border-color: #da3633; }
+        
+        /* Loading */
+        .loading-row td { text-align: center; padding: 40px; color: #8b949e; }
+    </style>
+</head>
+<body>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="title-area">
+            <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <h1>Questions</h1>
+        </div>
+        <div class="user-pill-top">
+            <i class="fas fa-user-circle"></i>
+            <span id="usernamePlaceholder">sathishkumark843</span>
+        </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+        <div class="filter-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchQuestions" placeholder="Search questions...">
+        </div>
+        <select class="filter-select" id="filterDifficulty">
+            <option value="">All Difficulty</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+        <select class="filter-select" id="filterSubject">
+            <option value="">Filter subject</option>
+            <option value="Computer Networks">Computer Networks</option>
+            <option value="Operating Systems">Operating Systems</option>
+            <option value="Java">Java</option>
+            <option value="Python">Python</option>
+            <option value="DBMS">DBMS</option>
+            <option value="Data Structures">Data Structures</option>
+        </select>
+    </div>
+
+    <!-- Hidden file input for CSV/PDF/Images -->
+    <input type="file" id="csvFileInput" accept=".csv, .pdf, image/*" style="display:none;">
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+        <button class="btn-csv" id="csvUploadBtn"><i class="fas fa-upload"></i> Import CSV</button>
+        <button class="btn-add" onclick="location.href='add-question.html'"><i class="fas fa-plus"></i> Add Question</button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+        <table class="q-table">
+            <thead>
+                <tr>
+                    <th>Question</th>
+                    <th>Subject</th>
+                    <th>Tags</th>
+                    <th>Difficulty</th>
+                    <th>Bloom</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="questionsTable">
+                <tr class="loading-row">
+                    <td colspan="6">
+                        <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+                        <span style="margin-left:8px">Loading questions...</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===== CSV Upload Modal ===== -->
+    <div class="modal fade" id="csvModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="background:#0d1117;border:1px solid #30363d;color:#e6edf3;">
+                <div class="modal-header" style="border-color:#21262d;">
+                    <h5 class="modal-title"><i class="fas fa-file-csv" style="color:#3fb950;"></i>&nbsp; Import Questions via CSV</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Drop zone -->
+                    <div class="csv-drop-zone" id="csvDropZone">
+                        <i class="fas fa-cloud-upload-alt" style="font-size:2.5rem;display:block;margin-bottom:12px;"></i>
+                        <strong>Click to choose CSV file</strong> or drag & drop here
+                        <p style="font-size:0.8rem;margin-top:8px;">Format: question, subject, difficulty, bloomLevel, tags, correctAnswer</p>
+                    </div>
+
+                    <!-- Preview -->
+                    <div id="csvPreview" style="display:none;margin-top:20px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                            <h6 style="margin:0;color:#3fb950;"><i class="fas fa-check-circle"></i> <span id="csvRowCount">0</span> questions ready to import</h6>
+                            <button class="btn-csv" style="font-size:0.78rem;padding:5px 12px;" onclick="document.getElementById('csvFileInput').click()">
+                                <i class="fas fa-redo"></i> Change File
+                            </button>
+                        </div>
+                        <div style="max-height:300px;overflow-y:auto;border:1px solid #21262d;border-radius:8px;">
+                            <table class="csv-preview-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th><th>Question</th><th>Subject</th><th>Difficulty</th><th>Bloom</th><th>Tags</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="csvPreviewBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Template download -->
+                    <div style="margin-top:16px;padding:12px;background:#161b22;border-radius:8px;font-size:0.8rem;color:#8b949e;">
+                        <i class="fas fa-info-circle" style="color:#58a6ff;"></i>
+                        &nbsp;CSV should have columns: <code style="color:#a371f7;">question, subject, difficulty, bloomLevel, tags, correctAnswer, explanation</code>
+                        &nbsp;&nbsp;<a href="#" onclick="downloadCsvTemplate()" style="color:#58a6ff;">Download Template</a>
+                    </div>
+                </div>
+                <div class="modal-footer" style="border-color:#21262d;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="importCsvBtn" disabled onclick="importCsvData()"
+                        style="background:linear-gradient(135deg,#238636,#2ea043);border:none;">
+                        <i class="fas fa-file-import"></i> Import Questions
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background:#161b22;border:1px solid #30363d;color:#e6edf3;">
+                <div class="modal-header" style="border-color:#21262d;">
+                    <h5 class="modal-title">Delete Question</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">Are you sure you want to delete this question? This action cannot be undone.</div>
+                <div class="modal-footer" style="border-color:#21262d;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toastNotification" class="toast" role="alert" style="background:#161b22;border:1px solid #30363d;color:#e6edf3;">
+            <div class="toast-header" style="background:#21262d;color:#e6edf3;border-color:#30363d;">
+                <strong class="me-auto" id="toastTitle">Notification</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="toastMessage"></div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="d-none" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;">
+        <div class="spinner-border text-light" role="status"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/questions.js"></script>
+    <script>
+    // ── CSV & Generic File Upload Logic ───────────────────────
+    let csvParsedData = [];
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const csvBtn = document.getElementById('csvUploadBtn');
+        const csvInput = document.getElementById('csvFileInput');
+
+        // CSV button → Directly open file browser
+        if (csvBtn) {
+            csvBtn.addEventListener('click', function() {
+                csvInput.click();
+            });
+        }
+
+        // File input change
+        if (csvInput) {
+            csvInput.addEventListener('change', function() {
+                if (this.files[0]) handleGenericUpload(this.files[0]);
+            });
+        }
+    });
+
+    function showLoading(show) {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            if (show) overlay.classList.remove('d-none');
+            else overlay.classList.add('d-none');
+        }
+    }
+
+    async function handleGenericUpload(file) {
+        showLoading(true);
+        const fileName = file.name.toLowerCase();
+        
+        try {
+            if (fileName.endsWith('.csv')) {
+                processCsvFile(file);
+            } else if (fileName.endsWith('.pdf')) {
+                await processPdfForQuestions(file);
+            } else if (fileName.match(/\.(jpg|jpeg|png|gif|bmp|webp)$/)) {
+                await processImageForQuestions(file);
+            } else {
+                showToast('Unsupported file format', 'danger', 'Error');
+                showLoading(false);
+            }
+        } catch (err) {
+            console.error('File processing error:', err);
+            showToast('Error processing file', 'danger', 'Error');
+            showLoading(false);
+        }
+    }
+
+    // ── PDF Processing ──────────────────────────────────────────
+    async function processPdfForQuestions(file) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        let fullText = '';
+        
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const textContent = await page.getTextContent();
+            fullText += textContent.items.map(item => item.str).join(' ') + ' ';
+        }
+        
+        const questions = extractQuestionsFromText(fullText);
+        handleExtractedQuestions(questions);
+    }
+
+    // ── Image OCR Processing ────────────────────────────────────
+    async function processImageForQuestions(file) {
+        const result = await Tesseract.recognize(file, 'eng');
+        const text = result.data.text;
+        const questions = extractQuestionsFromText(text);
+        handleExtractedQuestions(questions);
+    }
+
+    function extractQuestionsFromText(text) {
+        const cleaned = text.replace(/\s+/g, ' ').trim();
+        const patterns = [
+            /(?:^|\s)(\d{1,2}[\.\)]\s+)([A-Z][^?!.]*\?)/gm,
+            /((?:What|How|Why|Explain|Define|Describe)[^?!.]{10,}[?.])/gm
+        ];
+        
+        const found = [];
+        let match;
+        patterns.forEach(pat => {
+            pat.lastIndex = 0;
+            while ((match = pat.exec(cleaned)) !== null) {
+                found.push((match[2] || match[1]).trim());
+            }
+        });
+        return found;
+    }
+
+    function handleExtractedQuestions(questions) {
+        showLoading(false);
+        if (questions.length === 0) {
+            showBlinkingTableNotFound();
+            return;
+        }
+
+        csvParsedData = questions.map(q => ({
+            questionText: q,
+            subject: 'Extracted',
+            difficulty: 'Medium',
+            bloomLevel: 'Analysis',
+            tags: 'ai-extracted',
+            correctAnswer: 'N/A',
+            explanation: 'Extracted from file'
+        }));
+        
+        const modal = new bootstrap.Modal(document.getElementById('csvModal'));
+        renderCsvPreview();
+        modal.show();
+    }
+
+    function showBlinkingTableNotFound() {
+        const table = document.getElementById('questionsTable');
+        table.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align:center;padding:60px;">
+                    <style>
+                        @keyframes blinkRed { 0%, 100% { opacity: 1; color: #8b949e; } 50% { opacity: 0.5; color: #f85149; transform: scale(1.05); } }
+                        .blink-not-found { animation: blinkRed 1s infinite; font-weight: 700; font-size: 1.3rem; }
+                    </style>
+                    <div class="blink-not-found">
+                        <i class="fas fa-search-minus"></i> NO QUESTIONS DETECTED
+                    </div>
+                    <div style="color: #8b949e; margin-top:10px;">The uploaded file (PDF/Image) does not contain clear questions.</div>
+                </td>
+            </tr>
+        `;
+    }
+
+    function processCsvFile(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const rows = text.trim().split('\n');
+            if (rows.length < 2) {
+                alert('CSV file is empty or has no data rows.');
+                showLoading(false);
+                return;
+            }
+
+            const headers = rows[0].split(',').map(h => h.trim().toLowerCase().replace(/["']/g, ''));
+            csvParsedData = [];
+
+            for (let i = 1; i < rows.length; i++) {
+                const cols = parseCSVRow(rows[i]);
+                if (!cols[0]) continue;
+                const obj = {};
+                headers.forEach((h, idx) => obj[h] = (cols[idx] || '').trim());
+                csvParsedData.push({
+                    questionText: obj.question || obj.questiontext || obj['question text'] || cols[0],
+                    subject: obj.subject || 'General',
+                    difficulty: obj.difficulty || 'Medium',
+                    bloomLevel: obj.bloomlevel || obj.bloom || 'Understand',
+                    tags: obj.tags || '',
+                    correctAnswer: obj.correctanswer || obj.answer || '',
+                    explanation: obj.explanation || ''
+                });
+            }
+
+            showLoading(false);
+            const modal = new bootstrap.Modal(document.getElementById('csvModal'));
+            renderCsvPreview();
+            modal.show();
+        };
+        reader.readAsText(file);
+    }
+
+    function parseCSVRow(row) {
+        const result = [];
+        let inQuotes = false, val = '';
+        for (let ch of row) {
+            if (ch === '"') { inQuotes = !inQuotes; }
+            else if (ch === ',' && !inQuotes) { result.push(val); val = ''; }
+            else { val += ch; }
+        }
+        result.push(val);
+        return result;
+    }
+
+    function renderCsvPreview() {
+        const preview = document.getElementById('csvPreview');
+        const body = document.getElementById('csvPreviewBody');
+        const count = document.getElementById('csvRowCount');
+        const importBtn = document.getElementById('importCsvBtn');
+        const dropZone = document.getElementById('csvDropZone');
+
+        count.textContent = csvParsedData.length;
+        body.innerHTML = csvParsedData.slice(0, 50).map((row, i) => `
+            <tr>
+                <td style="color:#8b949e;">${i + 1}</td>
+                <td style="max-width:280px;">${(row.questionText || '').substring(0, 80)}${row.questionText.length > 80 ? '...' : ''}</td>
+                <td><span class="subject-pill">${row.subject}</span></td>
+                <td>${row.difficulty === 'Easy' ? '<span class="diff-easy">Easy</span>' : row.difficulty === 'Hard' ? '<span class="diff-hard">Hard</span>' : '<span class="diff-medium">Medium</span>'}</td>
+                <td><span class="bloom-pill">${row.bloomLevel}</span></td>
+                <td style="color:#8b949e;font-size:0.75rem;">${row.tags}</td>
+            </tr>
+        `).join('');
+
+        if (csvParsedData.length > 50) {
+            body.innerHTML += `<tr><td colspan="6" style="text-align:center;color:#8b949e;padding:12px;">... and ${csvParsedData.length - 50} more rows</td></tr>`;
+        }
+
+        dropZone.style.display = 'none';
+        preview.style.display = 'block';
+        importBtn.disabled = false;
+    }
+
+    function importCsvData() {
+        const importBtn = document.getElementById('importCsvBtn');
+        importBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Importing...';
+        importBtn.disabled = true;
+
+        // In demo mode, simulate import success
+        setTimeout(function() {
+            bootstrap.Modal.getInstance(document.getElementById('csvModal')).hide();
+            showToast(`✅ ${csvParsedData.length} questions imported successfully! (Demo Mode)`, 'success', 'Import Complete');
+            // Reset
+            csvParsedData = [];
+            document.getElementById('csvPreview').style.display = 'none';
+            document.getElementById('csvDropZone').style.display = 'block';
+            document.getElementById('importCsvBtn').innerHTML = '<i class="fas fa-file-import"></i> Import Questions';
+            document.getElementById('importCsvBtn').disabled = true;
+            document.getElementById('csvFileInput').value = '';
+            loadQuestions(); // Refresh table
+        }, 1500);
+    }
+
+    function downloadCsvTemplate() {
+        const header = 'question,subject,difficulty,bloomLevel,tags,correctAnswer,explanation';
+        const sample1 = '"What is the time complexity of binary search?",Computer Science,Medium,Analyze,"algorithms,search",B,"Binary search halves the search space each step."';
+        const sample2 = '"Explain Newton\'s Second Law of Motion.",Physics,Easy,Remember,"mechanics,force",A,"F = ma: Force equals mass times acceleration."';
+        const csv = [header, sample1, sample2].join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'sqaip_questions_template.csv';
+        a.click();
+    }
+    </script>
+</body>
+</html>

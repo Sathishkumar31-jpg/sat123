@@ -1,0 +1,9 @@
+{
+  "questionText": "What is the primary function of the mitochondria in a cell?",
+  "subject": "Biology",
+  "topic": "Cell Biology",
+  "difficulty": "Medium",
+  "bloomLevel": "Remember",
+  "correctAnswer": "To produce energy in the form of ATP.",
+  "tags": ["cell", "mitochondria", "biology"]
+}
